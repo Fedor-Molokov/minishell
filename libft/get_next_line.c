@@ -70,7 +70,6 @@ int		get_next_line(int const fd, char **line)
 		tmp = cpycat(tmp, buf);
 	}
 	*line = read_line(tmp);
-	printf("%s\n", *line);
 	if (ft_strchr(tmp, '\n'))
 		str = ft_strncpy(str, ft_strchr(tmp, '\n') + 1, BUFF_SIZE_GNL);
 	free(tmp);

@@ -6,7 +6,7 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/11 16:56:15 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/11 18:36:34 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/13 01:26:42 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,15 +61,18 @@ void    fsh_loop()
 {
     char    **args = NULL;
     int     status;
-    char    *line;
+    // char    *line;
 
     status = 1;
     while(status)
     {
-        ft_printf("$> ");
-        line = fsh_read_line(FD_MIN_SHELL, line);             // read next str
-        fsh_split_line(line, args);                           // split args
-        // status = fsh_execute(args);                        // return status var
+        // ft_printf("$> ");
+        // line = fsh_read_line(FD_MIN_SHELL, line);             // read next str
+        // printf("%s\n", line);
+        // fsh_split_line(line, args);                        // split args
+        args[0] = "cd";
+        args[1] = "../";
+        status = fsh_execute(args);                           // return status var
     }
 }
 
@@ -82,6 +85,63 @@ int     main(int argc, char **argv)
     (void)argv;
     fsh_loop();
     
-    // Perform any shutdown/cleanup
-    return (EXIT_SUCCESS);
+    return (0);
 }
+
+
+
+
+/*
+char    *path;
+size_t  size;
+                                        //    path;
+size = BUFSIZ;  
+path = ft_memalloc(size);
+getcwd(path, size);
+ft_printf("%s", path);
+*/
+
+
+
+
+/*
+   #include <unistd.h> 
+#include <stdio.h> 
+#include <termios.h> 
+#include <signal.h> 
+                                              //    autocomplete
+void sig_hnd(int sig)
+{ 
+    (void)sig;
+    printf("(VINTR)");
+}
+
+int main()
+{
+    struct termios old_termios, new_termios;
+    setvbuf(stdout,NULL,_IONBF,0);
+    tcgetattr(0,&old_termios);
+    signal( SIGINT, sig_hnd );
+
+  new_termios             = old_termios;
+  new_termios.c_cc[VEOF]  = 3; // ^C
+  new_termios.c_cc[VINTR] = 9; // ^tab
+  tcsetattr(0,TCSANOW,&new_termios);
+
+  char line[256]; 
+  int len;
+  do
+  {
+    len = read(0, line, 256); 
+    line[len]='\0';
+    if(len < 0) printf("(len: %i)",len);
+    if(len == 0) printf("(VEOF)");
+    if(len > 0)
+    {
+      if( line[len-1] == 10 ) printf("(line:'%.*s')\n",len-1,line);
+      if( line[len-1] != 10 ) printf("(partial line:'%s')",line);
+    }
+  }while( line[0] != 'q' );
+
+  tcsetattr(0,TCSANOW,&old_termios);
+}*/

@@ -24,7 +24,8 @@ LIBFT = libft.a
 
 OBJ = $(addprefix $(OBJ_DIR)/,$(SRC:.c=.o))
 
-SRC = main.c
+SRC = main.c \
+		builtin.c
 
 all: $(NAME)
 

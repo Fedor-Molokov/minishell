@@ -6,7 +6,7 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/11 16:57:35 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/11 17:14:29 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/13 01:00:48 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,5 +26,7 @@
 
 #define FSH_RL_BUFSIZE  1024
 #define FD_MIN_SHELL    0
+
+int     fsh_execute(char **args);
 
 # endif
