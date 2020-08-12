@@ -22,7 +22,7 @@
 # include <sys/stat.h>
 # include <sys/types.h>
 
-#define BUFF_SIZE_GNL 7
+#define BUFF_SIZE_GNL 1024
 
 int		ft_atoi(const char *str);
 void	ft_bzero(void *buf, size_t n);

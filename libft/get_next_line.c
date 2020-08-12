@@ -12,8 +12,6 @@
 
 #include "libft.h"
 
-#include <stdio.h>
-
 int		line_verif(char **line, char **tmp, int res, char **str)
 {
 	*str = NULL;
@@ -48,7 +46,6 @@ char	*cpycat(char *s1, char *s2)
 	tmp = ft_memalloc(ft_strlen(s1) + ft_strlen(s2));
 	s1 ? tmp = ft_strcpy(tmp, s1) : NULL;
 	s1 ? tmp = ft_strncat(tmp, s2, ft_strlen(s2)) : NULL;
-	//printf("%s\n", tmp);
 	return (tmp);
 }
 
