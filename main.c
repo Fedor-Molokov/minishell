@@ -6,7 +6,7 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/11 16:56:15 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/13 01:26:42 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/13 02:18:00 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,21 +59,23 @@ int     fsh_split_line(char *line, char **args)
 
 void    fsh_loop()
 {
-    char    **args = NULL;
+    char    *args = NULL;
+    char    **p;
     int     status;
     // char    *line;
 
+    p = &args;
     status = 1;
-    while(status)
-    {
+    // while(status)
+    // {
         // ft_printf("$> ");
         // line = fsh_read_line(FD_MIN_SHELL, line);             // read next str
         // printf("%s\n", line);
         // fsh_split_line(line, args);                        // split args
-        args[0] = "cd";
-        args[1] = "../";
-        status = fsh_execute(args);                           // return status var
-    }
+        p[0] = ft_strdup("cd");
+        p[1] = ft_strdup("../");
+        status = fsh_execute(p);                           // return status var
+    // }
 }
 
 int     main(int argc, char **argv)

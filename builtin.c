@@ -6,14 +6,12 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/13 00:59:49 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/13 01:33:49 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/13 02:17:36 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "minishell.h"
 
-static int  (**builtin_func) (char **);
-static char **builtin_str;
 int     fsh_cd(char **args);
 int     fsh_help(char **args);
 int     fsh_echo(char **args);
@@ -21,7 +19,14 @@ int     fsh_setenv(char **args);
 int     fsh_unsetenv(char **args);
 int     fsh_env(char **args);
 int     fsh_exit(char **args);
-
+static int  (*builtin_func[]) (char **) = 
+{
+    &fsh_cd, &fsh_help, &fsh_exit
+};
+static char *builtin_str[] = 
+{
+    "cd", "help", "echo", "setenv", "unsetenv", "env", "exit"
+};
 
 int     fsh_num_builtins()
 {
@@ -63,20 +68,21 @@ int     fsh_launch(char **args)
 
 int     fsh_execute(char **args)
 {
-    builtin_str[0] = "cd";
-    builtin_str[1] = "help";
-    builtin_str[2] = "echo";
-    builtin_str[3] = "setenv";
-    builtin_str[4] = "unsetenv";
-    builtin_str[5] = "env";
-    builtin_str[7] = "exit";
-    builtin_func[0] = &fsh_cd;
-    builtin_func[1] = &fsh_help;
-    builtin_func[6] = &fsh_exit;
-    // *builtin_func[2] = &lsh_echo;
-    // *builtin_func[3] = &lsh_setenv;
-    // *builtin_func[4] = &lsh_unsetenv;
-    // *builtin_func[5] = &lsh_env;
+    // builtin_str[0] = "cd";
+    // builtin_str[1] = "help";
+    // builtin_str[2] = "echo";
+    // builtin_str[3] = "setenv";
+    // builtin_str[4] = "unsetenv";
+    // builtin_str[5] = "env";
+    // builtin_str[7] = "exit";
+    
+    // builtin_func[0] = &fsh_cd;
+    // builtin_func[1] = &fsh_help;
+    // builtin_func[6] = &fsh_exit;
+    // // *builtin_func[2] = &lsh_echo;
+    // // *builtin_func[3] = &lsh_setenv;
+    // // *builtin_func[4] = &lsh_unsetenv;
+    // // *builtin_func[5] = &lsh_env;
     int i;
 
     if (args[0] == NULL)
@@ -93,6 +99,12 @@ int     fsh_execute(char **args)
     }
   return (fsh_launch(args));
 };
+
+int     fsh_exit(char **args)
+{
+    (void)args;
+    return (0);
+}
 
 int     fsh_cd(char **args)
 {
@@ -125,10 +137,4 @@ int     fsh_help(char **args)
     printf("Use the man command for information on other programs.\n");
     (void)args;
     return (1);
-}
-
-int     fsh_exit(char **args)
-{
-    (void)args;
-    return (0);
 }
