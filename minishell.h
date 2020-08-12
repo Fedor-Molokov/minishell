@@ -25,6 +25,6 @@
 # include "libft/ft_printf/ft_printf.h"
 
 #define FSH_RL_BUFSIZE  1024
-#define FD              0
+#define FD_MIN_SHELL    0
 
 # endif
