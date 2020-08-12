@@ -1,0 +1,9 @@
+*.o
+*.a
+*.dSYM
+obj_*
+minishell
+CMakeLists.txt
+cmake-build-debu
+.idea
+.DS_Store
