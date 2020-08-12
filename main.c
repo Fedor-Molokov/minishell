@@ -12,6 +12,48 @@
 
 # include "minishell.h"
 
+# define SIZE   10
+
+int     ft_home(char *line, char *tmp)
+{
+    line = ft_strdup(tmp);
+    free(tmp);
+    return (EXIT_FAILURE);
+}
+
+int     g_n_l(int fd, char **line)
+{
+    static char *str = NULL;
+    char        *tmp;
+    char        *buf;
+    int         res;
+
+    if (fd < 0)
+    {
+        ft_printf("error fd gnl\n");
+        exit(1);
+    }
+    if (str == NULL)
+        str = ft_memalloc(SIZE);
+    tmp = ft_strncpy(ft_memalloc(SIZE), str, SIZE);
+    buf = ft_memalloc(SIZE + 1);
+    while(ft_strchr(tmp, '\n'))
+    {
+        if ((res = read(fd, buf, SIZE)) < 0)
+            return(EXIT_FAILURE);
+        if (res == 0)
+            return (ft_home(*line, tmp));
+        buf[res] = '\n';
+        tmp = ft_strjoin(tmp, buf);
+    }
+    if (ft_strchr(tmp, '\n'))
+        str = ft_strncpy(ft_memalloc(SIZE), tmp, ft_strlen(tmp + 1));
+    *line = ft_strdup(tmp);
+    free(tmp);
+    free(buf);
+    return (EXIT_SUCCESS);
+}
+
 char    *fsh_read_line(int fd)
 {
     char    *line;
@@ -20,7 +62,14 @@ char    *fsh_read_line(int fd)
     // i = 0;
     // while (get_next_line(fd, line))
             // ft_printf("%s\n", line[i++]);
-    get_next_line(fd, &line);
+
+    // get_next_line(fd, &line);
+
+    if (!(g_n_l(fd, &line)))
+    {
+        ft_printf("Error g_n_l\n");
+        exit(EXIT_FAILURE);
+    }
     return(line);
 }
 
@@ -52,7 +101,7 @@ void    fsh_loop()
         // free(args);
         i++;
         if (i > 3)
-            exit(0);
+            exit(EXIT_SUCCESS);
     }
 }
 
