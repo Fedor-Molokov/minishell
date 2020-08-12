@@ -22,6 +22,8 @@
 # include <sys/stat.h>
 # include <sys/types.h>
 
+#define BUFF_SIZE_GNL 7
+
 int		ft_atoi(const char *str);
 void	ft_bzero(void *buf, size_t n);
 int		ft_isalnum(int i);
@@ -72,6 +74,7 @@ char	**ft_strsplit(char const *s, char c);
 char	*ft_strstr(const char *haystack, const char *needle);
 char	*ft_strsub(char const *s, unsigned int start, size_t len);
 char	*ft_strtrim(char const *s);
+int		get_next_line(int const fd, char **line);
 int		ft_tolower(int i);
 int		ft_toupper(int i);
 

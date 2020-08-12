@@ -26,12 +26,4 @@
 
 #define FSH_RL_BUFSIZE 1024
 
-# define BUFF_SIZE    7
-
-# define OUTPUT_STR    0
-// # define OUTPUT_STR_NAME    1
-// # define SIZE    7
-// # define SIZE    7
-// # define SIZE    7
-
 # endif
