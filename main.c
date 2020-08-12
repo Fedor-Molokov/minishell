@@ -6,7 +6,7 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/11 16:56:15 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/13 02:18:00 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/13 02:43:12 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,10 @@ void    fsh_loop()
         // line = fsh_read_line(FD_MIN_SHELL, line);             // read next str
         // printf("%s\n", line);
         // fsh_split_line(line, args);                        // split args
+        
         p[0] = ft_strdup("cd");
         p[1] = ft_strdup("../");
+        // p[0] = ft_strdup("help");
         status = fsh_execute(p);                           // return status var
     // }
 }

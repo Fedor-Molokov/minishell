@@ -6,7 +6,7 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/13 00:59:49 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/13 02:17:36 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/13 02:42:34 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static int  (*builtin_func[]) (char **) =
 };
 static char *builtin_str[] = 
 {
-    "cd", "help", "echo", "setenv", "unsetenv", "env", "exit"
+    "cd", "help", "exit", "echo", "setenv", "unsetenv", "env"
 };
 
 int     fsh_num_builtins()
@@ -68,23 +68,8 @@ int     fsh_launch(char **args)
 
 int     fsh_execute(char **args)
 {
-    // builtin_str[0] = "cd";
-    // builtin_str[1] = "help";
-    // builtin_str[2] = "echo";
-    // builtin_str[3] = "setenv";
-    // builtin_str[4] = "unsetenv";
-    // builtin_str[5] = "env";
-    // builtin_str[7] = "exit";
-    
-    // builtin_func[0] = &fsh_cd;
-    // builtin_func[1] = &fsh_help;
-    // builtin_func[6] = &fsh_exit;
-    // // *builtin_func[2] = &lsh_echo;
-    // // *builtin_func[3] = &lsh_setenv;
-    // // *builtin_func[4] = &lsh_unsetenv;
-    // // *builtin_func[5] = &lsh_env;
-    int i;
-
+    int     i;
+    int     j;
     if (args[0] == NULL)
     {
         // An empty command was entered.
@@ -93,8 +78,11 @@ int     fsh_execute(char **args)
     i = 0;
     while(i < fsh_num_builtins())
     {
-        if (strcmp(args[0], builtin_str[i]) == 0) 
-            return (*builtin_func[i])(args);
+        j = 0;
+        while(strcmp(args[i], builtin_str[j]) != 0)
+            j++;   
+        if (strcmp(args[i], builtin_str[j]) == 0)
+            return ((*builtin_func[j])(args));
         i++;
     }
   return (fsh_launch(args));
@@ -125,7 +113,7 @@ int     fsh_cd(char **args)
 int     fsh_help(char **args)
 {
     int i;
-    printf("Stephen Brennan's LSH\n");
+    printf("Fedor Molokov's FSH\n");
     printf("Type program names and arguments, and hit enter.\n");
     printf("The following are built in:\n");
     i = 0;
