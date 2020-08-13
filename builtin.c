@@ -6,7 +6,7 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/13 00:59:49 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/13 17:58:49 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/13 18:00:28 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,8 +146,6 @@ int     fsh_setenv(char **args, char **newenv)
     int     i;
     int     len;
 
-    fsh_env(args, newenv);
-    ft_printf("\n\n");
     i = 0;
     while (newenv[i])
         i++;
@@ -158,7 +156,5 @@ int     fsh_setenv(char **args, char **newenv)
     newenv[i][len] = '=';
     newenv[i][len + 1] = '\0';
     newenv[i + 1] = NULL;
-    ft_printf("\n\n");
-    fsh_env(args, newenv);
     return (1);
 }
