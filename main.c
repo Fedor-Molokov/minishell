@@ -6,7 +6,7 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/11 16:56:15 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/13 06:19:12 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/13 15:57:04 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,9 +85,10 @@ void    fsh_loop()
 int     main(int argc, char **argv)
 {
     extern char **environ;
-    char        **newenv;
+    char        ***newenv;
     // Load config files
-    ft_load_config_file(environ, &newenv);
+    newenv = NULL;
+    newenv = ft_load_config_file((const char **)environ);
     //Run command loop
     (void)argc;
     (void)argv;
