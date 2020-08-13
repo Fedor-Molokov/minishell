@@ -6,7 +6,7 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/13 00:59:49 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/13 03:15:11 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/13 04:50:00 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ int     fsh_execute(char **args)
         return (1);
     }
     i = 0;
-    while(i < count && args[i][0])
+    while(i < count && args[i])
     {
         j = 0;
         while(strcmp(args[i], builtin_str[j]) != 0 && j < count)
