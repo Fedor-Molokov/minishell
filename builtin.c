@@ -6,7 +6,7 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/13 00:59:49 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/13 17:20:45 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/13 17:58:49 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,11 @@ int     fsh_env(char **args, char **newenv);
 int     fsh_exit(char **args, char **newenv);
 static int  (*builtin_func[]) (char **, char **) = 
 {
-    &fsh_cd, &fsh_help, &fsh_exit, &fsh_env
+    &fsh_cd, &fsh_help, &fsh_exit, &fsh_env, &fsh_setenv
 };
 static char *builtin_str[] = 
 {
-    "cd", "help", "exit", "env", "echo", "setenv", "unsetenv"
+    "cd", "help", "exit", "env", "setenv", "unsetenv", "echo"
 };
 
 int     fsh_num_builtins()
@@ -138,5 +138,27 @@ int     fsh_env(char **args, char **newenv)
         i++;
     }
     (void)args;
+    return (1);
+}
+
+int     fsh_setenv(char **args, char **newenv)
+{
+    int     i;
+    int     len;
+
+    fsh_env(args, newenv);
+    ft_printf("\n\n");
+    i = 0;
+    while (newenv[i])
+        i++;
+    len = ft_strlen(args[1]);
+    if (!(newenv[i] = (char *)malloc(sizeof(char) * (len + 2))))
+        ft_error("malloc error\n");
+    ft_strcpy(newenv[i], args[1]);
+    newenv[i][len] = '=';
+    newenv[i][len + 1] = '\0';
+    newenv[i + 1] = NULL;
+    ft_printf("\n\n");
+    fsh_env(args, newenv);
     return (1);
 }
