@@ -6,7 +6,7 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/13 00:59:49 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/13 02:42:34 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/13 03:15:11 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,23 +70,26 @@ int     fsh_execute(char **args)
 {
     int     i;
     int     j;
+    int     count;
+    
+    count = fsh_num_builtins() - 1;
     if (args[0] == NULL)
     {
         // An empty command was entered.
-        return 1;
+        return (1);
     }
     i = 0;
-    while(i < fsh_num_builtins())
+    while(i < count && args[i][0])
     {
         j = 0;
-        while(strcmp(args[i], builtin_str[j]) != 0)
+        while(strcmp(args[i], builtin_str[j]) != 0 && j < count)
             j++;   
         if (strcmp(args[i], builtin_str[j]) == 0)
             return ((*builtin_func[j])(args));
         i++;
     }
-  return (fsh_launch(args));
-};
+    return (fsh_launch(args));
+}
 
 int     fsh_exit(char **args)
 {
