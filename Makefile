@@ -6,7 +6,7 @@
 #    By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/07/24 22:57:41 by dmarsell          #+#    #+#              #
-#    Updated: 2020/08/11 16:55:34 by dmarsell         ###   ########.fr        #
+#    Updated: 2020/08/13 05:30:44 by dmarsell         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,8 @@ LIBFT = libft.a
 OBJ = $(addprefix $(OBJ_DIR)/,$(SRC:.c=.o))
 
 SRC = main.c \
-		builtin.c
+		builtin.c \
+		env.c
 
 all: $(NAME)
 
