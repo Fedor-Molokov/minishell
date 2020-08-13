@@ -6,13 +6,13 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/13 05:29:13 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/13 16:04:59 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/13 16:23:24 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "minishell.h"
 
-char     **ft_load_config_file(const char **environ)
+char     **fsh_config(const char **environ)
 {
     char    **newenv;
     int     i;
@@ -32,7 +32,7 @@ char     **ft_load_config_file(const char **environ)
     while (j < i)
     {
         len = ft_strlen(environ[j]);
-        if (!(newenv[j] = (char *)malloc(sizeof(char ) * (len + 1))))
+        if (!(newenv[j] = (char *)malloc(sizeof(char) * (len + 1))))
             ft_error("malloc error\n");
         newenv[j][len] = '\0';
         j++;
@@ -41,7 +41,7 @@ char     **ft_load_config_file(const char **environ)
     while(environ[i])
     {
         newenv[i] = ft_strdup(environ[i]);
-        ft_printf("%s\n", newenv[i]);
+        // ft_printf("%s\n", newenv[i]);
         i++;
     }
     return (newenv);

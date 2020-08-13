@@ -6,7 +6,7 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/11 16:56:15 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/13 15:58:36 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/13 16:36:59 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int     fsh_split_line(char *line, char **args)
     return(EXIT_SUCCESS);
 }
 
-void    fsh_loop()
+void    fsh_loop(char **newenv)
 {
     char    *args = NULL;
     char    **p;
@@ -75,10 +75,15 @@ void    fsh_loop()
         
         // p[0] = ft_strdup("cd");
         // p[1] = ft_strdup("../");
+        // p[2] = NULL;
+        
         // p[0] = ft_strdup("help");
         // p[0] = ft_strdup("ls");
         // p[1] = NULL;
-        // status = fsh_execute(p);                           // return status var
+        
+        p[0] = ft_strdup("env");
+        // p[1] = NULL;                                                 // ??
+        status = fsh_execute(p, newenv);                           // return status var
     // }
 }
 
@@ -87,12 +92,11 @@ int     main(int argc, char **argv)
     extern char **environ;
     char        **newenv;
     // Load config files
-    newenv = NULL;
-    newenv = ft_load_config_file((const char **)environ);
+    newenv = fsh_config((const char **)environ);
     //Run command loop
     (void)argc;
     (void)argv;
-    // fsh_loop();
+    fsh_loop(newenv);
     
     return (0);
 }

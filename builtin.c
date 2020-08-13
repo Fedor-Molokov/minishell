@@ -6,26 +6,26 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/13 00:59:49 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/13 04:50:00 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/13 16:29:14 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "minishell.h"
 
-int     fsh_cd(char **args);
-int     fsh_help(char **args);
-int     fsh_echo(char **args);
-int     fsh_setenv(char **args);
-int     fsh_unsetenv(char **args);
-int     fsh_env(char **args);
-int     fsh_exit(char **args);
-static int  (*builtin_func[]) (char **) = 
+int     fsh_cd(char **args, char **newenv);
+int     fsh_help(char **args, char **newenv);
+int     fsh_echo(char **args, char **newenv);
+int     fsh_setenv(char **args, char **newenv);
+int     fsh_unsetenv(char **args, char **newenv);
+int     fsh_env(char **args, char **newenv);
+int     fsh_exit(char **args, char **newenv);
+static int  (*builtin_func[]) (char **, char **) = 
 {
-    &fsh_cd, &fsh_help, &fsh_exit
+    &fsh_cd, &fsh_help, &fsh_exit, &fsh_env
 };
 static char *builtin_str[] = 
 {
-    "cd", "help", "exit", "echo", "setenv", "unsetenv", "env"
+    "cd", "help", "exit", "env", "echo", "setenv", "unsetenv"
 };
 
 int     fsh_num_builtins()
@@ -45,14 +45,14 @@ int     fsh_launch(char **args)
         // Child process
         if (execvp(args[0], args) == -1)
         {
-        perror("lsh");
+        perror("fsh");
         }
         exit(EXIT_FAILURE);
     } 
     else if (pid < 0)
     {
         // Error forking
-        perror("lsh");
+        perror("fsh");
     }
     else
     {
@@ -66,7 +66,7 @@ int     fsh_launch(char **args)
     return (1);
 }
 
-int     fsh_execute(char **args)
+int     fsh_execute(char **args, char **newenv)
 {
     int     i;
     int     j;
@@ -85,19 +85,20 @@ int     fsh_execute(char **args)
         while(strcmp(args[i], builtin_str[j]) != 0 && j < count)
             j++;   
         if (strcmp(args[i], builtin_str[j]) == 0)
-            return ((*builtin_func[j])(args));
+            return ((*builtin_func[j])(args, newenv));
         i++;
     }
     return (fsh_launch(args));
 }
 
-int     fsh_exit(char **args)
+int     fsh_exit(char **args, char **newenv)
 {
     (void)args;
+    (void)newenv;
     return (0);
 }
 
-int     fsh_cd(char **args)
+int     fsh_cd(char **args, char **newenv)
 {
   if (args[1] == NULL) 
   {
@@ -107,13 +108,14 @@ int     fsh_cd(char **args)
   {
     if (chdir(args[1]) != 0) 
     {
-      perror("lsh");
+      perror("fsh");
     }
   }
+  (void)newenv;
   return (1);
 }
 
-int     fsh_help(char **args)
+int     fsh_help(char **args, char **newenv)
 {
     int i;
     printf("Fedor Molokov's FSH\n");
@@ -126,6 +128,21 @@ int     fsh_help(char **args)
         i++;
     }
     printf("Use the man command for information on other programs.\n");
+    (void)args;
+    (void)newenv;
+    return (1);
+}
+
+int     fsh_env(char **args, char **newenv)
+{
+    int     i;
+    
+    i = 0;
+    while(newenv[i])
+    {
+        ft_printf("%s\n", newenv[i]); 
+        i++;
+    }
     (void)args;
     return (1);
 }
