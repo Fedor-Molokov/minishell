@@ -6,7 +6,7 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/11 16:56:15 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/13 17:01:54 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/13 17:21:38 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ void    fsh_loop(char **newenv)
         // p[1] = NULL;
         
         p[0] = ft_strdup("env");
-        p[1] = NULL;                                                 // ??
+        p[1] = NULL;
         status = fsh_execute(p, newenv);                           // return status var
     // }
 }
