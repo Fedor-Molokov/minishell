@@ -6,7 +6,7 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/11 16:56:15 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/14 21:20:02 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/14 21:41:09 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,17 +59,22 @@ int     fsh_split_line(char *line, char **args)
 
 void    fsh_loop(char **newenv, char **environ)
 {
+    char    *line;
     char    **args;
     int     status;
 
     status = 1;
     args = malloc(sizeof(char *) * (2 + 1));
-    // while(status)
-    // {
-        // ft_printf("$> ");
-        // line = fsh_read_line(FD_MIN_SHELL, line);             // read next str
+    while(status)
+    {
+        ft_printf("$> ");
+        
+        line = fsh_read_line(FD_MIN_SHELL, line);             // read next str
+        
         // printf("%s\n", line);
         // fsh_split_line(line, args);                        // split args
+        
+        args = ft_strsplit(line, ' ');
         
         // p[0] = ft_strdup("cd");
         // p[1] = ft_strdup("../");
@@ -79,15 +84,15 @@ void    fsh_loop(char **newenv, char **environ)
         // p[0] = ft_strdup("ls");
         // p[1] = NULL;
 
-        args = malloc(sizeof(char *) * (2 + 1));
-        args[0] = ft_strdup("env");
+        // args = malloc(sizeof(char *) * (2 + 1));
+        // args[0] = ft_strdup("env");
         // args[1] = NULL;
-        args[1] = ft_strdup("QWE=qwe");
-        args[2] = NULL;
+        // args[1] = ft_strdup("QWE=qwe");
+        // args[2] = NULL;
         // args[1] = ft_strdup("QWE");
         // args[2] = NULL;
         status = fsh_execute(args, newenv, environ);                           // return status var
-    // }
+    }
 }
 
 int     main(int argc, char **argv)

@@ -6,7 +6,7 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/13 00:59:49 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/14 21:21:14 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/14 21:39:31 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,18 +165,36 @@ int     fsh_env(char **args, char **newenv, char **environ)
 int     fsh_setenv(char **args, char **newenv, char **environ)
 {
     int     i;
-    int     len;
+    int     len1;
+    int     len2;
 
     i = 0;
-    while (newenv[i])
+    while (environ[i])
         i++;
-    len = ft_strlen(args[1]);
-    if (!(newenv[i] = (char *)malloc(sizeof(char) * (len + 2))))
-        ft_error("malloc error\n");
-    ft_strcpy(newenv[i], args[1]);
-    newenv[i][len] = '=';
-    newenv[i][len + 1] = '\0';
-    newenv[i + 1] = NULL;
-    (void)environ;
+    args[1] == NULL ? fsh_env(args, newenv, environ) : 1;
+    if (args[1] && args[2] == NULL)
+    {
+        len1 = ft_strlen(args[1]);
+        if (!(environ[i] = (char *)malloc(sizeof(char) * (len1 + 2))))
+            ft_error("malloc error\n");
+        ft_strcpy(environ[i], args[1]);
+        environ[i][len1] = '=';
+        environ[i][len1 + 1] = '\0';
+        environ[i + 1] = NULL;
+    }
+    else if (args[2])
+    {
+        len1 = ft_strlen(args[1]);
+        len2 = len1;
+        len1 += ft_strlen(args[2]);
+        len2 = len1;
+        if (!(environ[i] = (char *)malloc(sizeof(char) * (len2 + 1))))
+            ft_error("malloc error\n");
+        ft_strcpy(environ[i], args[1]);
+        ft_strcpy(&environ[i][len1], args[2]);
+        environ[i][len2 + 1] = '\0';
+        environ[i + 1] = NULL;
+    }
+    (void)newenv;
     return (1);
 }
