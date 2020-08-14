@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmarsell <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/21 19:48:12 by dmarsell          #+#    #+#             */
-/*   Updated: 2019/09/30 12:55:16 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/14 20:55:26 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,8 @@ char	*ft_strstr(const char *haystack, const char *needle);
 char	*ft_strsub(char const *s, unsigned int start, size_t len);
 char	*ft_strtrim(char const *s);
 int		get_next_line(int const fd, char **line);
+char	*ft_strndup(const char *str, int len);
+int     ft_strnchr(const char *s, int c);
 int		ft_tolower(int i);
 int		ft_toupper(int i);
 

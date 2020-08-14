@@ -6,20 +6,20 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/13 00:59:49 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/13 18:00:28 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/14 21:00:25 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "minishell.h"
 
-int     fsh_cd(char **args, char **newenv);
-int     fsh_help(char **args, char **newenv);
-int     fsh_echo(char **args, char **newenv);
-int     fsh_setenv(char **args, char **newenv);
-int     fsh_unsetenv(char **args, char **newenv);
-int     fsh_env(char **args, char **newenv);
-int     fsh_exit(char **args, char **newenv);
-static int  (*builtin_func[]) (char **, char **) = 
+int     fsh_cd(char **args, char **newenv, char **environ);
+int     fsh_help(char **args, char **newenv, char **environ);
+int     fsh_echo(char **args, char **newenv, char **environ);
+int     fsh_setenv(char **args, char **newenv, char **environ);
+int     fsh_unsetenv(char **args, char **newenv, char **environ);
+int     fsh_env(char **args, char **newenv, char **environ);
+int     fsh_exit(char **args, char **newenv, char **environ);
+static int  (*builtin_func[]) (char **, char **, char **) = 
 {
     &fsh_cd, &fsh_help, &fsh_exit, &fsh_env, &fsh_setenv
 };
@@ -66,7 +66,7 @@ int     fsh_launch(char **args)
     return (1);
 }
 
-int     fsh_execute(char **args, char **newenv)
+int     fsh_execute(char **args, char **newenv, char **environ)
 {
     int     i;
     int     count;
@@ -81,18 +81,19 @@ int     fsh_execute(char **args, char **newenv)
     while(strcmp(args[0], builtin_str[i]) != 0 && i < count)
         i++;   
     if (strcmp(args[0], builtin_str[i]) == 0)
-        return ((*builtin_func[i])(args, newenv));
+        return ((*builtin_func[i])(args, newenv, environ));
     return (fsh_launch(args));
 }
 
-int     fsh_exit(char **args, char **newenv)
+int     fsh_exit(char **args, char **newenv, char **environ)
 {
     (void)args;
     (void)newenv;
+    (void)environ;
     return (0);
 }
 
-int     fsh_cd(char **args, char **newenv)
+int     fsh_cd(char **args, char **newenv, char **environ)
 {
   if (args[1] == NULL) 
   {
@@ -106,10 +107,11 @@ int     fsh_cd(char **args, char **newenv)
     }
   }
   (void)newenv;
+  (void)environ;
   return (1);
 }
 
-int     fsh_help(char **args, char **newenv)
+int     fsh_help(char **args, char **newenv, char **environ)
 {
     int i;
     printf("Fedor Molokov's FSH\n");
@@ -124,24 +126,42 @@ int     fsh_help(char **args, char **newenv)
     printf("Use the man command for information on other programs.\n");
     (void)args;
     (void)newenv;
+    (void)environ;
     return (1);
 }
 
-int     fsh_env(char **args, char **newenv)
+int     fsh_env(char **args, char **newenv, char **environ)
 {
-    int     i;
-    
-    i = 0;
-    while(newenv[i])
+    int     len;
+    char    *varname;
+        
+    if (args[1] == NULL)
+        ft_print_env(environ, NULL, 0);
+    else if (args[1] != NULL)
     {
-        ft_printf("%s\n", newenv[i]); 
-        i++;
+        // len = ft_strlen(args[1]);
+        len = ft_strnchr(args[1], '=');
+        // if ((len = ft_strnchr(args[1], '=') > -1))
+        // {
+            varname = ft_strdup(args[1]);
+            char *arname = ft_strndup(args[1], len);
+            ft_printf("%s\n", varname);
+            ft_printf("%s\n", arname);
+            // ft_print_env(environ, varname, len - 1);
+        // }
+        // else if ((len = ft_strnchr(args[1], '=') == -1))
+        // {
+        //     varname = ft_memalloc(len + 1);
+        //     varname[len] = '=';
+        //     ft_strcpy(varname, args[1]);
+        //     ft_print_env(environ, varname, len);
+        // }
     }
-    (void)args;
+    (void)newenv;
     return (1);
 }
 
-int     fsh_setenv(char **args, char **newenv)
+int     fsh_setenv(char **args, char **newenv, char **environ)
 {
     int     i;
     int     len;
@@ -156,5 +176,6 @@ int     fsh_setenv(char **args, char **newenv)
     newenv[i][len] = '=';
     newenv[i][len + 1] = '\0';
     newenv[i + 1] = NULL;
+    (void)environ;
     return (1);
 }

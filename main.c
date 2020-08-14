@@ -6,7 +6,7 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/11 16:56:15 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/13 17:58:11 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/14 20:38:43 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int     fsh_split_line(char *line, char **args)
     return(EXIT_SUCCESS);
 }
 
-void    fsh_loop(char **newenv)
+void    fsh_loop(char **newenv, char **environ)
 {
     char    **args;
     int     status;
@@ -80,10 +80,13 @@ void    fsh_loop(char **newenv)
         // p[1] = NULL;
 
         args = malloc(sizeof(char *) * (2 + 1));
-        args[0] = ft_strdup("setenv");
-        args[1] = ft_strdup("QWE");
-        args[3] = NULL;
-        status = fsh_execute(args, newenv);                           // return status var
+        args[0] = ft_strdup("env");
+        // args[1] = NULL;
+        args[1] = ft_strdup("QWE=qwe");
+        args[2] = NULL;
+        // args[1] = ft_strdup("QWE");
+        // args[2] = NULL;
+        status = fsh_execute(args, newenv, environ);                           // return status var
     // }
 }
 
@@ -96,7 +99,7 @@ int     main(int argc, char **argv)
     //Run command loop
     (void)argc;
     (void)argv;
-    fsh_loop(newenv);
+    fsh_loop(newenv, environ);
     
     return (0);
 }
