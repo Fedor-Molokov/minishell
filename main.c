@@ -6,7 +6,7 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/11 16:56:15 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/15 01:10:36 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/15 02:31:47 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,11 @@ void    fsh_loop(char **newenv, char **environ)
         // p[0] = ft_strdup("help");
         // p[0] = ft_strdup("ls");
         // p[1] = NULL;
+        
+        // int i = 0;
+        // while(environ[i])
+            // i++;       
+        // environ[i] = ft_strdup("QWE=asd");  
 
         // args[0] = ft_strdup("setenv");
         // args[1] = NULL;
@@ -88,8 +93,8 @@ void    fsh_loop(char **newenv, char **environ)
         // args[2] = NULL;
         // args[1] = ft_strdup("QWE");
         // args[2] = NULL;
-        // args[1] = ft_strdup("QWE=");
-        // args[2] = NULL;
+        // args[2] = ft_strdup("zxc");
+        // args[3] = NULL;
         status = fsh_execute(args, newenv, environ);                           // return status var
     }
 }

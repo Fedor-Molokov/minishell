@@ -6,7 +6,7 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/13 00:59:49 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/15 01:42:30 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/15 02:31:00 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,11 +176,6 @@ int     fsh_setenv(char **args, char **newenv, char **environ)
     args[1] == NULL ? fsh_env(args, newenv, environ) : 1;
     if (args[1] && args[2] == NULL)
     {
-        if (ft_compare(args[1], environ))
-        {
-            (void)newenv;
-            return (1);
-        }
         if (ft_strchr(args[1], '='))
         {
             ft_printf("setenv: Variable name must contain alphanumeric characters.\n");
@@ -197,6 +192,11 @@ int     fsh_setenv(char **args, char **newenv, char **environ)
     }
     else if (args[1] != NULL && args[2])
     {
+        if (ft_compare(args[1], args[2], environ))
+        {
+            (void)newenv;
+            return (1);
+        }
         len1 = ft_strlen(args[1]);
         len2 = ft_strlen(args[2]);
         if (!(environ[i] = (char *)malloc(sizeof(char) * (len1 + len2 + 1))))
