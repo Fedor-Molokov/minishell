@@ -6,7 +6,7 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/11 16:56:15 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/15 00:23:55 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/15 01:10:36 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void    fsh_loop(char **newenv, char **environ)
     int     status;
 
     status = 1;
-    // args = malloc(sizeof(char *) * (2 + 1));
+    // args = malloc(sizeof(char *) * (1 + 1));
     while(status)
     {
         ft_printf("$> ");
@@ -82,7 +82,7 @@ void    fsh_loop(char **newenv, char **environ)
         // p[0] = ft_strdup("ls");
         // p[1] = NULL;
 
-        // args[0] = ft_strdup("env");
+        // args[0] = ft_strdup("setenv");
         // args[1] = NULL;
         // args[1] = ft_strdup("QWE=qwe");
         // args[2] = NULL;
@@ -104,7 +104,7 @@ int     main(int argc, char **argv)
     (void)argc;
     (void)argv;
     fsh_loop(newenv, environ);
-    
+    exit(0);
     return (0);
 }
 

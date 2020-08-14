@@ -6,24 +6,38 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/13 05:29:13 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/15 00:23:25 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/15 01:41:15 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "minishell.h"
 
-// int     ft_compare(char *varibale, char **env)
-// {
-//     int     i;
+int     ft_addval(char *environ, char *variable, int equally)
+{
+    ft_bzeroall(&environ[equally]);
+    equally = ft_strnchr(variable, '=');
+    ft_strcpy(environ, &variable[equally]);
+    return (1);
+}
 
-//     i = 0;
-//     while(env[i])
-//     {
-//         if (ft_strcmp(varibale, env[i]) == 0)
-//             return(1)
-//     }
-//         i++;
-// }
+int     ft_compare(char *varibale, char **env)
+{
+    int     i;
+    int     equally;
+    char    *name;
+
+    equally = ft_strnchr(varibale, '=');
+    name = ft_strndup(varibale, equally);     
+    i = 0;
+    while(env[i])
+    {
+        equally = ft_strnchr(env[i], '=');
+        if (ft_strncmp(name, env[i], equally) == 0)
+            return(ft_addval(env[i], varibale, equally));
+        i++;
+    }
+    return (0);
+}
 
 char     **fsh_config(const char **environ)
 {
