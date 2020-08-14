@@ -6,7 +6,7 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/13 00:59:49 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/14 22:09:56 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/15 00:04:55 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,9 +78,9 @@ int     fsh_execute(char **args, char **newenv, char **environ)
         return (1);
     }
     i = 0;
-    while(strcmp(args[0], builtin_str[i]) != 0 && i < count)
+    while(ft_strcmp(args[0], builtin_str[i]) != 0 && i < count)
         i++;   
-    if (strcmp(args[0], builtin_str[i]) == 0)
+    if (ft_strcmp(args[0], builtin_str[i]) == 0)
         return ((*builtin_func[i])(args, newenv, environ));
     return (fsh_launch(args));
 }
@@ -144,15 +144,12 @@ int     fsh_env(char **args, char **newenv, char **environ)
         equally = ft_strnchr(args[1], '=');
         if (equally == -1)
         {
-            ft_printf("%s: No such file or directory", args[1]);
+            ft_printf("%s: %s: No such file or directory\n",args[0], args[1]);
             return (1);
         }
         if (len == equally)
         {
             varname = ft_strdup(args[1]);
-            // char *arname = ft_strndup(args[1], len);
-            // ft_printf("%s\n", varname);
-            // ft_printf("%s\n", arname);
             ft_print_env(environ, varname, len);
         }
         else if (len != equally)
@@ -179,6 +176,8 @@ int     fsh_setenv(char **args, char **newenv, char **environ)
     args[1] == NULL ? fsh_env(args, newenv, environ) : 1;
     if (args[1] && args[2] == NULL)
     {
+        // if (ft_strcmp(args[1], environ[i]) == 0)
+        //     return (1);
         len1 = ft_strlen(args[1]);
         if (!(environ[i] = (char *)malloc(sizeof(char) * (len1 + 2))))
             ft_error("malloc error\n");

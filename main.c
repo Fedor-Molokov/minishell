@@ -6,7 +6,7 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/11 16:56:15 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/14 22:16:21 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/15 00:23:55 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,8 @@ int     fsh_split_line(char *line, char **args)
     if ((sym = ft_find_split_char(line)))
         args = ft_strsplit(line, sym);          // need to process the argument string normally
     i = 0;
-    while(args[i])                              //
-        ft_printf("%s\n", args[i++]);           // test
+    // while(args[i])                              //
+        // ft_printf("%s\n", args[i++]);           // test
     return(EXIT_SUCCESS);
 }
 
@@ -64,15 +64,15 @@ void    fsh_loop(char **newenv, char **environ)
     int     status;
 
     status = 1;
-    args = malloc(sizeof(char *) * (2 + 1));
-    // while(status)
-    // {
-        // ft_printf("$> ");
+    // args = malloc(sizeof(char *) * (2 + 1));
+    while(status)
+    {
+        ft_printf("$> ");
         
-        // line = fsh_read_line(FD_MIN_SHELL, line);             // read next str
+        line = fsh_read_line(FD_MIN_SHELL, line);             // read next str
         // printf("%s\n", line);
         // fsh_split_line(line, args);                        // split args
-        // args = ft_strsplit(line, ' ');
+        args = ft_strsplit(line, ' ');
         
         // p[0] = ft_strdup("cd");
         // p[1] = ft_strdup("../");
@@ -82,16 +82,16 @@ void    fsh_loop(char **newenv, char **environ)
         // p[0] = ft_strdup("ls");
         // p[1] = NULL;
 
-        args[0] = ft_strdup("env");
+        // args[0] = ft_strdup("env");
         // args[1] = NULL;
         // args[1] = ft_strdup("QWE=qwe");
         // args[2] = NULL;
         // args[1] = ft_strdup("QWE");
         // args[2] = NULL;
-        args[1] = ft_strdup("QWE=");
-        args[2] = NULL;
+        // args[1] = ft_strdup("QWE=");
+        // args[2] = NULL;
         status = fsh_execute(args, newenv, environ);                           // return status var
-    // }
+    }
 }
 
 int     main(int argc, char **argv)

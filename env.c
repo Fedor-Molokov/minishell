@@ -6,11 +6,24 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/13 05:29:13 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/14 22:35:23 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/15 00:23:25 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "minishell.h"
+
+// int     ft_compare(char *varibale, char **env)
+// {
+//     int     i;
+
+//     i = 0;
+//     while(env[i])
+//     {
+//         if (ft_strcmp(varibale, env[i]) == 0)
+//             return(1)
+//     }
+//         i++;
+// }
 
 char     **fsh_config(const char **environ)
 {
@@ -49,9 +62,10 @@ char     **fsh_config(const char **environ)
 
 void    ft_print_env(char **env, char *var, int len)
 {
-    char    *tmp;
     int     i;
+    int     flag;
 
+    flag = 0;
     i = 0;
     while(env[i] && var == NULL)
     {
@@ -62,13 +76,8 @@ void    ft_print_env(char **env, char *var, int len)
     {
         if (!(ft_strncmp(env[i], var, len)))
         {
-            tmp = ft_strdup(env[i]);
-            ft_bzeroall(env[i]);
-            ft_strcpy(env[i], var);
-            ft_printf("%d = %s\n", i, env[i]);
-            ft_bzeroall(env[i]);
-            ft_strcpy(env[i], tmp);
-            free(tmp);
+            flag = 1;
+            ft_printf("%d = %s\n", i, var);
             if (env[i + 1] == NULL)
                 break ;
             else
@@ -77,4 +86,6 @@ void    ft_print_env(char **env, char *var, int len)
         ft_printf("%d = %s\n", i, env[i]); 
         i++;
     }
+    if (var && flag == 0)
+        ft_printf("%d = %s\n", ++i, var);
 }
