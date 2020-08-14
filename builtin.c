@@ -6,7 +6,7 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/13 00:59:49 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/14 21:00:25 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/14 21:21:14 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,29 +133,30 @@ int     fsh_help(char **args, char **newenv, char **environ)
 int     fsh_env(char **args, char **newenv, char **environ)
 {
     int     len;
+    int     equally;
     char    *varname;
         
     if (args[1] == NULL)
         ft_print_env(environ, NULL, 0);
     else if (args[1] != NULL)
     {
-        // len = ft_strlen(args[1]);
-        len = ft_strnchr(args[1], '=');
-        // if ((len = ft_strnchr(args[1], '=') > -1))
-        // {
+        len = ft_strlen(args[1]);
+        equally = ft_strnchr(args[1], '=');
+        if (len == equally)
+        {
             varname = ft_strdup(args[1]);
-            char *arname = ft_strndup(args[1], len);
-            ft_printf("%s\n", varname);
-            ft_printf("%s\n", arname);
-            // ft_print_env(environ, varname, len - 1);
-        // }
-        // else if ((len = ft_strnchr(args[1], '=') == -1))
-        // {
-        //     varname = ft_memalloc(len + 1);
-        //     varname[len] = '=';
-        //     ft_strcpy(varname, args[1]);
-        //     ft_print_env(environ, varname, len);
-        // }
+            // char *arname = ft_strndup(args[1], len);
+            // ft_printf("%s\n", varname);
+            // ft_printf("%s\n", arname);
+            ft_print_env(environ, varname, len);
+        }
+        else if (len != equally)
+        {
+            varname = ft_memalloc(len + 1);
+            varname[len] = '=';
+            ft_strcpy(varname, args[1]);
+            ft_print_env(environ, varname, equally);
+        }
     }
     (void)newenv;
     return (1);
