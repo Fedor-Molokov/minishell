@@ -6,7 +6,7 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/13 00:59:49 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/14 21:39:31 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/14 22:09:56 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,6 +142,11 @@ int     fsh_env(char **args, char **newenv, char **environ)
     {
         len = ft_strlen(args[1]);
         equally = ft_strnchr(args[1], '=');
+        if (equally == -1)
+        {
+            ft_printf("%s: No such file or directory", args[1]);
+            return (1);
+        }
         if (len == equally)
         {
             varname = ft_strdup(args[1]);
@@ -185,15 +190,15 @@ int     fsh_setenv(char **args, char **newenv, char **environ)
     else if (args[2])
     {
         len1 = ft_strlen(args[1]);
-        len2 = len1;
-        len1 += ft_strlen(args[2]);
-        len2 = len1;
-        if (!(environ[i] = (char *)malloc(sizeof(char) * (len2 + 1))))
+        len2 = ft_strlen(args[2]);
+        if (!(environ[i] = (char *)malloc(sizeof(char) * (len1 + len2 + 1))))
             ft_error("malloc error\n");
         ft_strcpy(environ[i], args[1]);
-        ft_strcpy(&environ[i][len1], args[2]);
-        environ[i][len2 + 1] = '\0';
+        ft_strcpy(&environ[i][len1], "=");
+        ft_strcpy(&environ[i][len1 + 1], args[2]);
+        environ[i][len1 + len2 + 2] = '\0';
         environ[i + 1] = NULL;
+        // fsh_env(args, newenv, environ); //
     }
     (void)newenv;
     return (1);

@@ -1,35 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   additional.c                                       :+:      :+:    :+:   */
+/*   ft_bzeroall.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/08/14 19:44:13 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/14 20:23:58 by dmarsell         ###   ########.fr       */
+/*   Created: 2020/08/14 22:25:09 by dmarsell          #+#    #+#             */
+/*   Updated: 2020/08/14 22:26:14 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "minishell.h"
+#include "libft.h"
 
-void    ft_print_env(char **env, char *var, int len)
+void	ft_bzeroall(char *buf)
 {
-    int     i;
+	size_t		i;
 
-    i = 0;
-    while(env[i] && var == NULL)
-    {
-        ft_printf("%s\n", env[i]); 
-        i++;
-    }
-    while(env[i] && var != NULL)
-    {
-        if (!(ft_strncmp(env[i], var, len)))
-        {
-            ft_printf("%s\n", var);
-            i++;
-        }
-        ft_printf("%s\n", env[i]); 
-        i++;
-    }
+	i = 0;
+	while (buf[i])
+	{
+		buf[i] = '\0';
+		i++;
+	}
 }
