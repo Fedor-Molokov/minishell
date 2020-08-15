@@ -6,7 +6,7 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/11 16:56:15 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/15 22:21:06 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/15 23:56:16 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,67 @@ int     fsh_split_line(char *line, char **args)
 
 // static char line[256]; 
 
+void    ft_null(t_sort *stsort)
+{
+    sort->flag = 0;
+    sort->i = 0;
+    sort->j = 0;
+    sort->sym = 0;
+    sort->sort = NULL;
+}
+
+// void    ft_sort_next(char *tmp, t_sort *stsort)
+// {
+//     while(names[sort->i])
+//     {
+//         sort->sym = 0;
+//         while (tmp[sort->sym])
+//         {
+//             if (tmp[sort->sym] == names[sort->i][sort->sym])
+//             {
+//                 sort[sort->j] = names[sort->i];
+//                 sort->flag == 0 ? sort->j++ : j;
+//                 sort->flag = 1;
+//             }
+//             sort->sym++;
+//         } 
+//         sort->flag = 0;
+//         sort->i++;
+//     }
+// }
+
+
+void    ft_sort(char *tmp, char **names, t_sort *stsort)
+{
+    int     flag;
+    int     j;
+    int     i;
+    int     sym;
+    
+    sym = 0;
+    j = 0;
+    i = 0;
+    flag = 0;
+    stsort->sort = NULL;
+    while(names[sort->i])
+    {
+        sort->sym = 0;
+        while (tmp[sort->sym])
+        {
+            if (tmp[sort->sym] == names[sort->i][sort->sym])
+            {
+                sort[sort->j] = names[sort->i];
+                sort->flag == 0 ? sort->j++ : j;
+                sort->flag = 1;
+            }
+            sort->sym++;
+        } 
+        sort->flag = 0;
+        sort->i++;
+    }
+    ft_sort_(tmp, stsort->sort, stsort);
+}
+
 int     ft_find_sp(char line[READ_SIZE])
 {
     int     i;
@@ -106,7 +167,9 @@ void   ft_autocomplete(int fd, char line[READ_SIZE])
     int             space;
     int             len;
     int             i;
+    t_sort          stsort;
     
+    ft_null(&stsort);
     path = ft_memalloc(BUFSIZ);
     if (!(names = (char **)malloc(sizeof(char *) * 1)))
         ft_error("malloc error");
@@ -125,11 +188,13 @@ void   ft_autocomplete(int fd, char line[READ_SIZE])
             names[i] = ft_strdup(dirp->d_name);
             i++;
         }
-        i = 0;
-        while(names[i])
-        {
+        names[i] = NULL;
+        ft_sort(tmp, names, stsort);
+        // i = 0;
+        // while(names[i])
+        // {
             
-        }
+        // }
     }
     
 } 
@@ -149,28 +214,28 @@ void    readline(int fd, char line[READ_SIZE])
     struct termios  new_termios;
     int             len;
     
-    tcgetattr(0,&old_termios);
-    signal( SIGINT, sig_hand );
+    tcgetattr(0, &old_termios);
+    signal(SIGINT, sig_hand);
     new_termios = old_termios;
     new_termios.c_cc[VINTR]  = 3;                                   // ^C
     new_termios.c_cc[VEOF] = 9;                                     // ^tab
-    tcsetattr(0,TCSANOW,&new_termios);
+    tcsetattr(0, TCSANOW, &new_termios);
     len = 0;
     while(1)
     {
         len = read(0, line, READ_SIZE); 
-        line[len]='\0';
+        line[len] = '\0';
         if(len == 0) 
             continue ;
         if(len > 0)
         {
-            if(line[len-1] == 10)                                     // enter
+            if(line[len - 1] == 10)                                     // enter
                 break ;
-            if(line[len-1] != 10)                                     // tab
+            if(line[len - 1] != 10)                                     // tab
                ft_autocomplete(fd, line);
         }
     }
-    tcsetattr(0,TCSANOW,&old_termios);
+    tcsetattr(0, TCSANOW, &old_termios);
 }
 
 void    fsh_loop(char **newenv, char **environ)
