@@ -6,7 +6,7 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/13 00:59:49 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/15 02:31:00 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/15 05:06:10 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int     fsh_env(char **args, char **newenv, char **environ);
 int     fsh_exit(char **args, char **newenv, char **environ);
 static int  (*builtin_func[]) (char **, char **, char **) = 
 {
-    &fsh_cd, &fsh_help, &fsh_exit, &fsh_env, &fsh_setenv
+    &fsh_cd, &fsh_help, &fsh_exit, &fsh_env, &fsh_setenv, &fsh_unsetenv
 };
 static char *builtin_str[] = 
 {
@@ -208,6 +208,16 @@ int     fsh_setenv(char **args, char **newenv, char **environ)
         environ[i + 1] = NULL;
         // fsh_env(args, newenv, environ); //
     }
+    (void)newenv;
+    return (1);
+}
+
+int     fsh_unsetenv(char **args, char **newenv, char **environ)
+{
+    if (args[1] == NULL)
+        ft_printf("unsetenv: Too few arguments.\n");
+    if (args[1])
+        ft_find_var(args[1], environ);
     (void)newenv;
     return (1);
 }

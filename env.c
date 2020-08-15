@@ -6,11 +6,46 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/13 05:29:13 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/15 02:30:57 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/15 05:19:03 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "minishell.h"
+
+int     ft_sort_env(char **env, int i)
+{
+    int     len;
+    
+    if (env[i + 1] == NULL)
+    {
+        env[i] = NULL;
+        // len = ft_strlen(env[i]);
+        // ft_bzero(env[i], len);
+        return (1);
+    }
+    while(env[i][0])
+    {
+        env[i] = env[i + 1];
+        i++;
+    }
+    env[i] = NULL;
+    return (1);
+}
+
+void    ft_find_var(char *variable, char **env)
+{
+    int     equally;
+    int     i;
+
+    i = 0;
+    while(env[i])
+    {
+        equally = ft_strnchr(env[i], '=');
+        if (!(ft_strncmp(variable, env[i], equally)))
+            ft_sort_env(env, i);
+        i++;
+    }
+}
 
 int     ft_compare(char *name, char *value, char **env)
 {
