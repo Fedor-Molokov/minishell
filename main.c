@@ -6,7 +6,7 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/11 16:56:15 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/15 05:16:27 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/15 06:58:54 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void    ft_error(char *str)
 {
     ft_printf("%s", str);
-    exit(EXIT_FAILURE);
+    fsh_exit(NULL, NULL, NULL);
 }
 
 char    ft_find_split_char(char *line)
@@ -87,10 +87,10 @@ void    fsh_loop(char **newenv, char **environ)
             // i++;       
         // environ[i] = ft_strdup("QWE=");  
 
-        // args[0] = ft_strdup("unsetenv");
-        // args[1] = NULL;
-        // args[1] = ft_strdup("QWE");
-        // args[2] = NULL;
+        // args[0] = ft_strdup("echo");
+        // args[1] = ft_strdup("\"\"\"qwerty\"");
+        // args[1] = ft_strdup("wergb\"\"qwer");
+        // args[3] = NULL;
         // args[1] = ft_strdup("QWE");
         // args[2] = NULL;
         // args[2] = ft_strdup("zxc");

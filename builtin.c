@@ -6,7 +6,7 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/13 00:59:49 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/15 05:24:28 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/15 06:54:01 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int     fsh_env(char **args, char **newenv, char **environ);
 int     fsh_exit(char **args, char **newenv, char **environ);
 static int  (*builtin_func[]) (char **, char **, char **) = 
 {
-    &fsh_cd, &fsh_help, &fsh_exit, &fsh_env, &fsh_setenv, &fsh_unsetenv
+    &fsh_cd, &fsh_help, &fsh_exit, &fsh_env, &fsh_setenv, &fsh_unsetenv, &fsh_echo
 };
 static char *builtin_str[] = 
 {
@@ -220,5 +220,30 @@ int     fsh_unsetenv(char **args, char **newenv, char **environ)
     if (args[1])
         ft_find_var(args[1], environ);
     (void)newenv;
+    return (1);
+}
+
+int     fsh_echo(char **args, char **newenv, char **environ)
+{
+    char    *tmp;
+    int     i;
+    
+    i = 1;
+    while (args[i])
+    {
+        if (ft_strchr(args[i], 34) || ft_strchr(args[i], 39))
+        {
+            tmp = ft_del_quotation(args[i]);
+            ft_printf("%s", tmp);
+            args[i + 1] ? ft_putchar(' ') : 1;
+            free(tmp);
+            i++;
+            continue ;
+        }
+        ft_printf("%s", args[i]);
+        args[i + 1] ? ft_putchar(' ') : 1;
+        i++;
+    }
+    ft_putchar('\n');
     return (1);
 }

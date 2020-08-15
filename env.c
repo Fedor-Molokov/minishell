@@ -6,11 +6,53 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/13 05:29:13 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/15 05:20:29 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/15 06:58:21 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "minishell.h"
+
+int     ft_count_quotation(char *str)
+{
+    int     i;
+    int     count;
+
+    count = 0;
+    i = 0;
+    while (str[i])
+    {
+        if (str[i] == 34 || str[i] == 39)
+            count++;
+        i++;
+    }
+    return (count);
+}
+
+char    *ft_del_quotation(char *str)
+{
+    char    *tmp;
+    int     count;
+    int     len;
+    int     i;
+    int     j;
+    
+    len = ft_strlen(str);
+    count = ft_count_quotation(str);
+    if (!(tmp = ft_memalloc(len - count + 1)))
+        ft_error("malloc error");
+    j = 0;
+    i = 0;
+    while(str[i] && j < (len - count))
+    {
+        while (str[i] == 34 || str[i] == 39)
+            i++;
+        tmp[j] = str[i];
+        i++;
+        j++;
+    }
+    tmp[j] = '\0';
+    return (tmp);
+}
 
 int     ft_sort_env(char **env, int i)
 {
