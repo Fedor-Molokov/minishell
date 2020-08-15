@@ -6,7 +6,7 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/11 16:56:15 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/15 21:48:20 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/15 21:56:18 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,16 @@ int     fsh_split_line(char *line, char **args)
 
 // static char line[256]; 
 
+void   ft_autocomplete(int fd, char line[READ_SIZE])
+{
+    DIR     *dp;
+    dirent  *dirp;
+    char    *path;
+    char    *tmp;
+
+    path = 
+} 
+
 void    sig_hand(int sig)
 { 
     (void)sig;
@@ -102,7 +112,6 @@ void    readline(int fd, char line[READ_SIZE])
     struct termios  old_termios;
     struct termios  new_termios;
     int             len;
-    int             res;
     
     tcgetattr(0,&old_termios);
     signal( SIGINT, sig_hand );
@@ -111,7 +120,6 @@ void    readline(int fd, char line[READ_SIZE])
     new_termios.c_cc[VEOF] = 9;                                     // ^tab
     tcsetattr(0,TCSANOW,&new_termios);
     len = 0;
-    res = 0;
     while(1)
     {
         len = read(0, line, READ_SIZE); 
@@ -123,7 +131,7 @@ void    readline(int fd, char line[READ_SIZE])
             if(line[len-1] == 10)                                     // enter
                 break ;
             if(line[len-1] != 10)                                     // tab
-               ft_autocomplete(fd);
+               ft_autocomplete(fd, line);
         }
     }
     tcsetattr(0,TCSANOW,&old_termios);
