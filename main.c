@@ -6,7 +6,7 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/11 16:56:15 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/15 21:56:18 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/15 22:21:06 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,24 +78,60 @@ int     fsh_split_line(char *line, char **args)
 
 
 
-
-
-
-
-
-
 #define READ_SIZE 256
 
 // static char line[256]; 
 
+int     ft_find_sp(char line[READ_SIZE])
+{
+    int     i;
+
+    i = ft_strlen(line);
+    while (i >= 0)
+    {
+        if (line[i] == ' ')
+            return(i + 1);
+        i--;
+    }
+    return(-1);
+}
+
 void   ft_autocomplete(int fd, char line[READ_SIZE])
 {
-    DIR     *dp;
-    dirent  *dirp;
-    char    *path;
-    char    *tmp;
-
-    path = 
+    struct  dirent  *dirp;
+    DIR             *dp;
+    char            **names;
+    char            *path;
+    char            *tmp;
+    int             space;
+    int             len;
+    int             i;
+    
+    path = ft_memalloc(BUFSIZ);
+    if (!(names = (char **)malloc(sizeof(char *) * 1)))
+        ft_error("malloc error");
+    names[1] = NULL;
+    getcwd(path, BUFSIZ);
+    dp = opendir(path);
+    space = 0;
+    i = 0;
+    if (!(space = ft_find_sp(line)) != -1)
+    {
+        len = ft_strlen(line);
+        tmp = ft_memalloc(len - space);
+        tmp = ft_strdup(&line[space]);   
+        while(dirp = readdir(dp))
+        {
+            names[i] = ft_strdup(dirp->d_name);
+            i++;
+        }
+        i = 0;
+        while(names[i])
+        {
+            
+        }
+    }
+    
 } 
 
 void    sig_hand(int sig)

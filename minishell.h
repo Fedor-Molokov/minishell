@@ -6,7 +6,7 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/11 16:57:35 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/15 21:26:15 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/15 21:59:29 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <fcntl.h>
 # include <unistd.h>
 # include <sys/types.h>
+# include <sys/dir.h>
 # include <sys/uio.h>
 # include <dirent.h>
 # include <sys/stat.h>
