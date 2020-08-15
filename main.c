@@ -6,7 +6,7 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/11 16:56:15 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/15 06:58:54 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/15 07:51:51 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,8 +87,8 @@ void    fsh_loop(char **newenv, char **environ)
             // i++;       
         // environ[i] = ft_strdup("QWE=");  
 
-        // args[0] = ft_strdup("echo");
-        // args[1] = ft_strdup("\"\"\"qwerty\"");
+        // args[0] = ft_strdup("cd");
+        // args[1] = ft_strdup("~");
         // args[1] = ft_strdup("wergb\"\"qwer");
         // args[3] = NULL;
         // args[1] = ft_strdup("QWE");

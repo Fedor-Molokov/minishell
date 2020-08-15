@@ -6,11 +6,31 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/13 05:29:13 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/15 06:58:21 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/15 07:49:35 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "minishell.h"
+
+char    *ft_find_home(char **env, char *tmp)
+{
+    int     equally;
+    // char    *tmp;
+    int     i;
+
+    i = 0;
+    while(env[i])
+    {
+        // equally = ft_strnchr(env[i], '=');
+        if (ft_strncmp("HOME", env[i], 4) == 0)
+        {
+            tmp = ft_strdup(&env[i][5]);
+            return(tmp);
+        }
+        i++;
+    }
+    return (NULL);
+}
 
 int     ft_count_quotation(char *str)
 {

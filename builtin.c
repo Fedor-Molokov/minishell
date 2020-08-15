@@ -6,7 +6,7 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/13 00:59:49 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/15 06:54:01 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/15 07:51:22 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,20 +95,23 @@ int     fsh_exit(char **args, char **newenv, char **environ)
 
 int     fsh_cd(char **args, char **newenv, char **environ)
 {
-  if (args[1] == NULL) 
-  {
-    fprintf(stderr, "lsh: expected argument to \"cd\"\n");
-  } 
-  else 
-  {
-    if (chdir(args[1]) != 0) 
+    char    *tmp;
+    
+    if (args[1] == NULL) 
+        ft_error("fsh: expected argument to \"cd\"\n");
+    else
     {
-      perror("fsh");
+        if (args[1][0] == '~' && args[1][1] == '\0')
+        {
+            tmp = ft_find_home(environ, tmp);
+            chdir(tmp);
+        }
+        else if (chdir(args[1]) != 0) 
+            perror("fsh");                          //
     }
-  }
-  (void)newenv;
-  (void)environ;
-  return (1);
+    (void)newenv;
+    (void)environ;
+    return (1);
 }
 
 int     fsh_help(char **args, char **newenv, char **environ)
