@@ -6,7 +6,7 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/11 16:57:35 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/15 09:24:55 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/15 21:26:15 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include <sys/wait.h>
 # include <signal.h>
 # include <stdio.h>
+# include <termios.h> 
 # include "libft/ft_printf/ft_printf.h"
 
 #define FSH_RL_BUFSIZE  1024

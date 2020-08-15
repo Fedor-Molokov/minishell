@@ -6,19 +6,19 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/11 16:56:15 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/15 09:48:07 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/15 21:48:20 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "minishell.h"
 
-void    ft_handler(int s)
-{
-    signal(SIGINT, ft_handler);
-    write(1, "\r$>   ", 6);
-    write(1, "\r$> ", 4);
-    write(1, "\n$> ", 4);
-}
+// void    ft_handler(int s)
+// {
+//     signal(SIGINT, ft_handler);
+//     write(1, "\r$>   ", 6);
+//     write(1, "\r$> ", 4);
+//     write(1, "\n$> ", 4);
+// }
 
 void    ft_error(char *str)
 {
@@ -65,9 +65,74 @@ int     fsh_split_line(char *line, char **args)
     return(EXIT_SUCCESS);
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#define READ_SIZE 256
+
+// static char line[256]; 
+
+void    sig_hand(int sig)
+{ 
+    (void)sig;
+    signal(SIGINT, sig_hand);
+    write(1, "\r$>   ", 6);
+    write(1, "\r$> ", 4);
+    write(1, "\n$> ", 4);
+}
+
+void    readline(int fd, char line[READ_SIZE])
+{
+    struct termios  old_termios;
+    struct termios  new_termios;
+    int             len;
+    int             res;
+    
+    tcgetattr(0,&old_termios);
+    signal( SIGINT, sig_hand );
+    new_termios = old_termios;
+    new_termios.c_cc[VINTR]  = 3;                                   // ^C
+    new_termios.c_cc[VEOF] = 9;                                     // ^tab
+    tcsetattr(0,TCSANOW,&new_termios);
+    len = 0;
+    res = 0;
+    while(1)
+    {
+        len = read(0, line, READ_SIZE); 
+        line[len]='\0';
+        if(len == 0) 
+            continue ;
+        if(len > 0)
+        {
+            if(line[len-1] == 10)                                     // enter
+                break ;
+            if(line[len-1] != 10)                                     // tab
+               ft_autocomplete(fd);
+        }
+    }
+    tcsetattr(0,TCSANOW,&old_termios);
+}
+
 void    fsh_loop(char **newenv, char **environ)
 {
-    char    *line;
+    // char    *line;
+    char    line[READ_SIZE];
     char    **args;
     int     status;
 
@@ -75,10 +140,10 @@ void    fsh_loop(char **newenv, char **environ)
     args = malloc(sizeof(char *) * (1 + 1));
     while(status)
     {
-        signal(SIGINT, ft_handler);
+        // signal(SIGINT, ft_handler);
         ft_printf("$> ");
         
-        line = fsh_read_line(FD_MIN_SHELL, line);             // read next str
+        status = fsh_read_line(FD_MIN_SHELL, line);             // read next str
         // printf("%s\n", line);
         // fsh_split_line(line, args);                        // split args
         args = ft_strsplit(line, ' ');
