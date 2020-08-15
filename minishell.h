@@ -6,7 +6,7 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/11 16:57:35 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/15 02:03:46 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/15 05:24:45 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@
 int     fsh_execute(char **args, char **newenv, char **environ);
 int     ft_compare(char *name, char *value, char **env);
 void    ft_print_env(char **env, char *var, int len);
+void    ft_find_var(char *variable, char **env);
 char    **fsh_config(const char **environ);
 void    ft_error(char *str);
 

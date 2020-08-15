@@ -6,7 +6,7 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/13 00:59:49 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/15 05:06:10 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/15 05:24:28 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -206,7 +206,6 @@ int     fsh_setenv(char **args, char **newenv, char **environ)
         ft_strcpy(&environ[i][len1 + 1], args[2]);
         environ[i][len1 + len2 + 2] = '\0';
         environ[i + 1] = NULL;
-        // fsh_env(args, newenv, environ); //
     }
     (void)newenv;
     return (1);
@@ -216,6 +215,8 @@ int     fsh_unsetenv(char **args, char **newenv, char **environ)
 {
     if (args[1] == NULL)
         ft_printf("unsetenv: Too few arguments.\n");
+    if (ft_strchr(args[1], '='))
+        return (1);
     if (args[1])
         ft_find_var(args[1], environ);
     (void)newenv;
