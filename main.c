@@ -6,7 +6,7 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/11 16:56:15 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/15 23:56:16 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/16 00:02:25 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,26 +91,6 @@ void    ft_null(t_sort *stsort)
     sort->sort = NULL;
 }
 
-// void    ft_sort_next(char *tmp, t_sort *stsort)
-// {
-//     while(names[sort->i])
-//     {
-//         sort->sym = 0;
-//         while (tmp[sort->sym])
-//         {
-//             if (tmp[sort->sym] == names[sort->i][sort->sym])
-//             {
-//                 sort[sort->j] = names[sort->i];
-//                 sort->flag == 0 ? sort->j++ : j;
-//                 sort->flag = 1;
-//             }
-//             sort->sym++;
-//         } 
-//         sort->flag = 0;
-//         sort->i++;
-//     }
-// }
-
 
 void    ft_sort(char *tmp, char **names, t_sort *stsort)
 {
@@ -119,28 +99,29 @@ void    ft_sort(char *tmp, char **names, t_sort *stsort)
     int     i;
     int     sym;
     
-    sym = 0;
     j = 0;
-    i = 0;
     flag = 0;
     stsort->sort = NULL;
-    while(names[sort->i])
+    i = 0;
+    while(names[i])
     {
-        sort->sym = 0;
-        while (tmp[sort->sym])
+        sym = 0;
+        while (tmp[sym])
         {
-            if (tmp[sort->sym] == names[sort->i][sort->sym])
+            if (tmp[sym] == names[i][sym])
             {
-                sort[sort->j] = names[sort->i];
-                sort->flag == 0 ? sort->j++ : j;
-                sort->flag = 1;
+                stsort->sort[j] = names[i];
+                flag == 0 ? j++ : j;
+                flag = 1;
             }
-            sort->sym++;
+            sym++;
         } 
-        sort->flag = 0;
-        sort->i++;
+        flag = 0;
+        i++;
     }
-    ft_sort_(tmp, stsort->sort, stsort);
+    stsort->sort[j] = NULL;
+    if (names[i + 1] != NULL)
+        ft_sort(tmp, stsort->sort, stsort);
 }
 
 int     ft_find_sp(char line[READ_SIZE])
