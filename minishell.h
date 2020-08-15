@@ -6,7 +6,7 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/11 16:57:35 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/15 23:55:31 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/16 02:21:51 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,19 +30,20 @@
 #define FSH_RL_BUFSIZE  1024
 #define FD_MIN_SHELL    0
 
-typedef struct  s_sort
-{
-    char    **sort;
-    // int     flag;
-    // int     j;
-    // int     i;
-    // int     sym;
-}               t_sort;
+// typedef struct  s_sort
+// {
+//     char    **sort;
+//     // int     flag;
+//     // int     j;
+//     // int     i;
+//     // int     sym;
+// }               t_sort;
 
-int     fsh_execute(char **args, char **newenv, char **environ);
+int     fsh_execute(char **args, char **environ);
 int     ft_compare(char *name, char *value, char **env);
 void    ft_print_env(char **env, char *var, int len);
 void    ft_find_var(char *variable, char **env);
+int     fsh_exit(char **args, char **environ);
 char    *ft_find_home(char **env, char *tmp);
 char    **fsh_config(const char **environ);
 char    *ft_del_quotation(char *str);

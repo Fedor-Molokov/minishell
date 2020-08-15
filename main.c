@@ -6,7 +6,7 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/11 16:56:15 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/16 00:22:46 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/16 02:22:47 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 void    ft_error(char *str)
 {
     ft_printf("%s", str);
-    fsh_exit(NULL, NULL, NULL);
+    fsh_exit(NULL, NULL);
 }
 
 char    ft_find_split_char(char *line)
@@ -82,27 +82,32 @@ int     fsh_split_line(char *line, char **args)
 
 // static char line[256]; 
 
-void    ft_null(t_sort *stsort)
-{
-    // stsort->flag = 0;
-    // stsort->i = 0;
-    // stsort->j = 0;
-    // stsort->sym = 0;
-    stsort->sort = malloc(sizeof(char *) * (1 + 1));
-    stsort->sort = NULL;
-}
+// void    ft_null(t_sort *stsort)
+// {
+//     // stsort->flag = 0;
+//     // stsort->i = 0;
+//     // stsort->j = 0;
+//     // stsort->sym = 0;
+//     stsort->sort = malloc(sizeof(char *) * (1 + 1));
+//     stsort->sort = NULL;
+// }
 
 
-void    ft_sort(char *tmp, char **names, t_sort *stsort)
+void    ft_sort(char *tmp, char **names, char **sort)
 {
     int     flag;
     int     j;
     int     i;
     int     sym;
     
+    if (sort == NULL)
+    {
+        sort = malloc(sizeof(char *) * 1);
+        sort = NULL;
+    }
     j = 0;
     flag = 0;
-    stsort->sort = NULL;
+    sort = NULL;
     i = 0;
     while(names[i])
     {
@@ -111,7 +116,7 @@ void    ft_sort(char *tmp, char **names, t_sort *stsort)
         {
             if (tmp[sym] == names[i][sym])
             {
-                stsort->sort[j] = names[i];
+                sort[j] = ft_strdup(names[i]);
                 flag == 0 ? j++ : j;
                 flag = 1;
             }
@@ -120,9 +125,9 @@ void    ft_sort(char *tmp, char **names, t_sort *stsort)
         flag = 0;
         i++;
     }
-    stsort->sort[j] = NULL;
-    if (stsort->sort[0] && stsort->sort[1] != NULL)
-        ft_sort(tmp, stsort->sort, stsort);
+    sort[j] = NULL;
+    if (sort[0] && sort[1] != NULL)
+        ft_sort(tmp, sort, NULL);
 }
 
 int     ft_find_sp(char line[READ_SIZE])
@@ -139,7 +144,7 @@ int     ft_find_sp(char line[READ_SIZE])
     return(-1);
 }
 
-void   ft_autocomplete(int fd, char line[READ_SIZE])
+void   ft_autocomplete(char line[READ_SIZE])
 {
     struct  dirent  *dirp;
     DIR             *dp;
@@ -149,18 +154,20 @@ void   ft_autocomplete(int fd, char line[READ_SIZE])
     int             space;
     int             len;
     int             i;
-    t_sort          stsort;
+    char            **sort;
     
-    ft_null(&stsort);
+    // ft_null(&stsort);
+    sort = malloc(sizeof(char *) * 1);
+    // sort = NULL;
     path = ft_memalloc(BUFSIZ);
     if (!(names = (char **)malloc(sizeof(char *) * 1)))
         ft_error("malloc error");
-    names[1] = NULL;
+    // names = NULL;
     getcwd(path, BUFSIZ);
     dp = opendir(path);
     space = 0;
     i = 0;
-    if (!((space = ft_find_sp(line)) != -1))
+    if ((space = ft_find_sp(line)) != -1)
     {
         len = ft_strlen(line);
         tmp = ft_memalloc(len - space);
@@ -171,7 +178,7 @@ void   ft_autocomplete(int fd, char line[READ_SIZE])
             i++;
         }
         names[i] = NULL;
-        ft_sort(tmp, names, &stsort);
+        ft_sort(tmp, names, sort);
         // i = 0;
         // while(names[i])
         // {
@@ -190,41 +197,42 @@ void    sig_hand(int sig)
     write(1, "\n$> ", 4);
 }
 
-int    readline(int fd, char line[READ_SIZE])
+int    readline(char line[READ_SIZE])
 {
-    struct termios  old_termios;
-    struct termios  new_termios;
-    int             len;
+    // struct termios  old_termios;
+    // struct termios  new_termios;
+    // int             len;
     
-    signal(SIGINT, sig_hand);
-    tcgetattr(0, &old_termios);
-    new_termios = old_termios;
-    new_termios.c_cc[VINTR] = 3;                                   // ^C
-    new_termios.c_cc[VEOF] = 9;                                     // ^tab
-    tcsetattr(0, TCSANOW, &new_termios);
-    len = 0;
-    while(1)
-    {
-        len = read(0, line, READ_SIZE); 
-        line[len] = '\0';
-        if(len == 0) 
-            continue ;
-        if(len > 0)
-        {
-            if(line[len - 1] == 10)                                     // enter
-            {
-                 tcsetattr(0, TCSANOW, &old_termios);
-                return(1);
-            }
-            if(line[len - 1] != 10)                                     // tab
-               ft_autocomplete(fd, line);
-        }
-    }
+    // signal(SIGINT, sig_hand);
+    // tcgetattr(0, &old_termios);
+    // new_termios = old_termios;
+    // new_termios.c_cc[VINTR] = 3;                                   // ^C
+    // new_termios.c_cc[VEOF] = 9;                                     // ^tab
+    // tcsetattr(0, TCSANOW, &new_termios);
+    // len = 0;
+    // while(1)
+    // {
+    //     len = read(0, line, READ_SIZE); 
+    //     line[len] = '\0';
+    //     if(len == 0) 
+    //         continue ;
+    //     if(len > 0)
+    //     {
+    //         if(line[len - 1] == 10)                                     // enter
+    //         {
+    //              tcsetattr(0, TCSANOW, &old_termios);
+    //             return(1);
+    //         }
+    //         if(line[len - 1] != 10)                                     // tab
+                line = "ls e";
+               ft_autocomplete(line);
+    //     }
+    // }
     // tcsetattr(0, TCSANOW, &old_termios);
     return (1);
 }
 
-void    fsh_loop(char **newenv, char **environ)
+void    fsh_loop(char **environ)
 {
     // char    *line;
     char    line[READ_SIZE];
@@ -235,19 +243,19 @@ void    fsh_loop(char **newenv, char **environ)
     len = 0;
     status = 1;
     args = malloc(sizeof(char *) * (1 + 1));
-    while(status)
-    {
+    // while(status)
+    // {
         // signal(SIGINT, ft_handler);
-        ft_printf("$> ");
+        // ft_printf("$> ");
         
         // status = fsh_read_line(FD_MIN_SHELL, line);             // read next str
-        status = readline(FD_MIN_SHELL, line);   
+        status = readline(line);   
         // printf("%s\n", line);
         // fsh_split_line(line, args);                        // split args
-        line[0] == '\n' ? line[0] = '\0' : 1;
-        len = ft_strlen(line);
-        line[len - 1] == '\n' ? line[len - 1] = '\0' : 1;
-        args = ft_strsplit(line, ' ');
+        // line[0] == '\n' ? line[0] = '\0' : 1;
+        // len = ft_strlen(line);
+        // line[len - 1] == '\n' ? line[len - 1] = '\0' : 1;
+        // args = ft_strsplit(line, ' ');
         
         // p[0] = ft_strdup("cd");
         // p[1] = ft_strdup("../");
@@ -270,20 +278,19 @@ void    fsh_loop(char **newenv, char **environ)
         // args[2] = NULL;
         // args[2] = ft_strdup("zxc");
         // args[3] = NULL;
-        status = fsh_execute(args, newenv, environ);                           // return status var
-    }
+        // status = fsh_execute(args, newenv, environ);                           // return status var
+    // }
 }
 
 int     main(int argc, char **argv)
 {
     extern char **environ;
-    char        **newenv;
     // Load config files
     // newenv = fsh_config((const char **)environ);
     //Run command loop
     (void)argc;
     (void)argv;
-    fsh_loop(newenv, environ);
+    fsh_loop(environ);
     // exit(0);
     return (0);
 }

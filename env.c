@@ -6,7 +6,7 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/13 05:29:13 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/15 07:49:35 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/16 02:24:50 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 char    *ft_find_home(char **env, char *tmp)
 {
-    int     equally;
+    // int     equally;
     // char    *tmp;
     int     i;
 
@@ -76,8 +76,6 @@ char    *ft_del_quotation(char *str)
 
 int     ft_sort_env(char **env, int i)
 {
-    int     len;
-    
     if (env[i + 1] == NULL)
     {
         env[i] = NULL;
