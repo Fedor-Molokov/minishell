@@ -6,7 +6,7 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/11 16:56:15 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/16 00:02:25 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/16 00:22:46 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,11 +84,12 @@ int     fsh_split_line(char *line, char **args)
 
 void    ft_null(t_sort *stsort)
 {
-    sort->flag = 0;
-    sort->i = 0;
-    sort->j = 0;
-    sort->sym = 0;
-    sort->sort = NULL;
+    // stsort->flag = 0;
+    // stsort->i = 0;
+    // stsort->j = 0;
+    // stsort->sym = 0;
+    stsort->sort = malloc(sizeof(char *) * (1 + 1));
+    stsort->sort = NULL;
 }
 
 
@@ -120,7 +121,7 @@ void    ft_sort(char *tmp, char **names, t_sort *stsort)
         i++;
     }
     stsort->sort[j] = NULL;
-    if (names[i + 1] != NULL)
+    if (stsort->sort[0] && stsort->sort[1] != NULL)
         ft_sort(tmp, stsort->sort, stsort);
 }
 
@@ -159,18 +160,18 @@ void   ft_autocomplete(int fd, char line[READ_SIZE])
     dp = opendir(path);
     space = 0;
     i = 0;
-    if (!(space = ft_find_sp(line)) != -1)
+    if (!((space = ft_find_sp(line)) != -1))
     {
         len = ft_strlen(line);
         tmp = ft_memalloc(len - space);
         tmp = ft_strdup(&line[space]);   
-        while(dirp = readdir(dp))
+        while((dirp = readdir(dp)))
         {
             names[i] = ft_strdup(dirp->d_name);
             i++;
         }
         names[i] = NULL;
-        ft_sort(tmp, names, stsort);
+        ft_sort(tmp, names, &stsort);
         // i = 0;
         // while(names[i])
         // {
@@ -189,16 +190,16 @@ void    sig_hand(int sig)
     write(1, "\n$> ", 4);
 }
 
-void    readline(int fd, char line[READ_SIZE])
+int    readline(int fd, char line[READ_SIZE])
 {
     struct termios  old_termios;
     struct termios  new_termios;
     int             len;
     
-    tcgetattr(0, &old_termios);
     signal(SIGINT, sig_hand);
+    tcgetattr(0, &old_termios);
     new_termios = old_termios;
-    new_termios.c_cc[VINTR]  = 3;                                   // ^C
+    new_termios.c_cc[VINTR] = 3;                                   // ^C
     new_termios.c_cc[VEOF] = 9;                                     // ^tab
     tcsetattr(0, TCSANOW, &new_termios);
     len = 0;
@@ -211,12 +212,16 @@ void    readline(int fd, char line[READ_SIZE])
         if(len > 0)
         {
             if(line[len - 1] == 10)                                     // enter
-                break ;
+            {
+                 tcsetattr(0, TCSANOW, &old_termios);
+                return(1);
+            }
             if(line[len - 1] != 10)                                     // tab
                ft_autocomplete(fd, line);
         }
     }
-    tcsetattr(0, TCSANOW, &old_termios);
+    // tcsetattr(0, TCSANOW, &old_termios);
+    return (1);
 }
 
 void    fsh_loop(char **newenv, char **environ)
@@ -225,7 +230,9 @@ void    fsh_loop(char **newenv, char **environ)
     char    line[READ_SIZE];
     char    **args;
     int     status;
+    int     len;
 
+    len = 0;
     status = 1;
     args = malloc(sizeof(char *) * (1 + 1));
     while(status)
@@ -233,9 +240,13 @@ void    fsh_loop(char **newenv, char **environ)
         // signal(SIGINT, ft_handler);
         ft_printf("$> ");
         
-        status = fsh_read_line(FD_MIN_SHELL, line);             // read next str
+        // status = fsh_read_line(FD_MIN_SHELL, line);             // read next str
+        status = readline(FD_MIN_SHELL, line);   
         // printf("%s\n", line);
         // fsh_split_line(line, args);                        // split args
+        line[0] == '\n' ? line[0] = '\0' : 1;
+        len = ft_strlen(line);
+        line[len - 1] == '\n' ? line[len - 1] = '\0' : 1;
         args = ft_strsplit(line, ' ');
         
         // p[0] = ft_strdup("cd");
