@@ -6,19 +6,18 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/13 00:59:49 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/15 07:51:22 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/15 08:09:13 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "minishell.h"
-
-int     fsh_cd(char **args, char **newenv, char **environ);
-int     fsh_help(char **args, char **newenv, char **environ);
-int     fsh_echo(char **args, char **newenv, char **environ);
-int     fsh_setenv(char **args, char **newenv, char **environ);
-int     fsh_unsetenv(char **args, char **newenv, char **environ);
-int     fsh_env(char **args, char **newenv, char **environ);
-int     fsh_exit(char **args, char **newenv, char **environ);
+int             fsh_cd(char **args, char **newenv, char **environ);
+int             fsh_help(char **args, char **newenv, char **environ);
+int             fsh_echo(char **args, char **newenv, char **environ);
+int             fsh_setenv(char **args, char **newenv, char **environ);
+int             fsh_unsetenv(char **args, char **newenv, char **environ);
+int             fsh_env(char **args, char **newenv, char **environ);
+int             fsh_exit(char **args, char **newenv, char **environ);
 static int  (*builtin_func[]) (char **, char **, char **) = 
 {
     &fsh_cd, &fsh_help, &fsh_exit, &fsh_env, &fsh_setenv, &fsh_unsetenv, &fsh_echo
@@ -73,10 +72,7 @@ int     fsh_execute(char **args, char **newenv, char **environ)
     
     count = fsh_num_builtins() - 1;
     if (args[0] == NULL)
-    {
-        // An empty command was entered.
         return (1);
-    }
     i = 0;
     while(ft_strcmp(args[0], builtin_str[i]) != 0 && i < count)
         i++;   
@@ -106,8 +102,8 @@ int     fsh_cd(char **args, char **newenv, char **environ)
             tmp = ft_find_home(environ, tmp);
             chdir(tmp);
         }
-        else if (chdir(args[1]) != 0) 
-            perror("fsh");                          //
+        else if (chdir(args[1]) != 0)
+            ft_error("fsh: expected argument to \"cd\"\n");
     }
     (void)newenv;
     (void)environ;

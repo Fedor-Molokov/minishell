@@ -6,7 +6,7 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/11 16:56:15 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/15 07:51:51 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/15 08:09:45 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,22 +113,6 @@ int     main(int argc, char **argv)
     return (0);
 }
 
-
-
-
-/*
-char    *path;
-size_t  size;
-                                        //    path;
-size = BUFSIZ;  
-path = ft_memalloc(size);
-getcwd(path, size);
-ft_printf("%s", path);
-*/
-
-
-
-
 /*
    #include <unistd.h> 
 #include <stdio.h> 
@@ -170,3 +154,32 @@ int main()
 
   tcsetattr(0,TCSANOW,&old_termios);
 }*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+char    *path;
+size_t  size;
+                                        //    path;
+size = BUFSIZ;  
+path = ft_memalloc(size);
+getcwd(path, size);
+ft_printf("%s", path);
+*/
