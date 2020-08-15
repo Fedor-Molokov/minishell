@@ -6,11 +6,19 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/11 16:56:15 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/15 08:09:45 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/15 09:48:07 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "minishell.h"
+
+void    ft_handler(int s)
+{
+    signal(SIGINT, ft_handler);
+    write(1, "\r$>   ", 6);
+    write(1, "\r$> ", 4);
+    write(1, "\n$> ", 4);
+}
 
 void    ft_error(char *str)
 {
@@ -67,6 +75,7 @@ void    fsh_loop(char **newenv, char **environ)
     args = malloc(sizeof(char *) * (1 + 1));
     while(status)
     {
+        signal(SIGINT, ft_handler);
         ft_printf("$> ");
         
         line = fsh_read_line(FD_MIN_SHELL, line);             // read next str
