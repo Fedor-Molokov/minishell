@@ -6,7 +6,7 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/11 16:57:35 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/16 02:21:51 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/16 03:22:18 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,12 @@
 # include <signal.h>
 # include <stdio.h>
 # include <termios.h> 
+# include <errno.h>
 # include "libft/ft_printf/ft_printf.h"
 
 #define FSH_RL_BUFSIZE  1024
 #define FD_MIN_SHELL    0
+#define READ_SIZE       256
 
 // typedef struct  s_sort
 // {
@@ -48,5 +50,9 @@ char    *ft_find_home(char **env, char *tmp);
 char    **fsh_config(const char **environ);
 char    *ft_del_quotation(char *str);
 void    ft_error(char *str);
+
+void    ft_sort(char *tmp, char **names, char **sort);
+int     ft_find_sp(char line[READ_SIZE]);
+void   ft_autocomplete(char line[READ_SIZE]);
 
 # endif

@@ -6,7 +6,7 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/11 16:56:15 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/16 02:22:47 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/16 03:16:08 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ int     fsh_split_line(char *line, char **args)
 
 
 
-#define READ_SIZE 256
+
 
 // static char line[256]; 
 
@@ -93,100 +93,7 @@ int     fsh_split_line(char *line, char **args)
 // }
 
 
-void    ft_sort(char *tmp, char **names, char **sort)
-{
-    int     flag;
-    int     j;
-    int     i;
-    int     sym;
-    
-    if (sort == NULL)
-    {
-        sort = malloc(sizeof(char *) * 1);
-        sort = NULL;
-    }
-    j = 0;
-    flag = 0;
-    sort = NULL;
-    i = 0;
-    while(names[i])
-    {
-        sym = 0;
-        while (tmp[sym])
-        {
-            if (tmp[sym] == names[i][sym])
-            {
-                sort[j] = ft_strdup(names[i]);
-                flag == 0 ? j++ : j;
-                flag = 1;
-            }
-            sym++;
-        } 
-        flag = 0;
-        i++;
-    }
-    sort[j] = NULL;
-    if (sort[0] && sort[1] != NULL)
-        ft_sort(tmp, sort, NULL);
-}
 
-int     ft_find_sp(char line[READ_SIZE])
-{
-    int     i;
-
-    i = ft_strlen(line);
-    while (i >= 0)
-    {
-        if (line[i] == ' ')
-            return(i + 1);
-        i--;
-    }
-    return(-1);
-}
-
-void   ft_autocomplete(char line[READ_SIZE])
-{
-    struct  dirent  *dirp;
-    DIR             *dp;
-    char            **names;
-    char            *path;
-    char            *tmp;
-    int             space;
-    int             len;
-    int             i;
-    char            **sort;
-    
-    // ft_null(&stsort);
-    sort = malloc(sizeof(char *) * 1);
-    // sort = NULL;
-    path = ft_memalloc(BUFSIZ);
-    if (!(names = (char **)malloc(sizeof(char *) * 1)))
-        ft_error("malloc error");
-    // names = NULL;
-    getcwd(path, BUFSIZ);
-    dp = opendir(path);
-    space = 0;
-    i = 0;
-    if ((space = ft_find_sp(line)) != -1)
-    {
-        len = ft_strlen(line);
-        tmp = ft_memalloc(len - space);
-        tmp = ft_strdup(&line[space]);   
-        while((dirp = readdir(dp)))
-        {
-            names[i] = ft_strdup(dirp->d_name);
-            i++;
-        }
-        names[i] = NULL;
-        ft_sort(tmp, names, sort);
-        // i = 0;
-        // while(names[i])
-        // {
-            
-        // }
-    }
-    
-} 
 
 void    sig_hand(int sig)
 { 
@@ -224,6 +131,7 @@ int    readline(char line[READ_SIZE])
     //             return(1);
     //         }
     //         if(line[len - 1] != 10)                                     // tab
+     printf("-3\n");
                 line = "ls e";
                ft_autocomplete(line);
     //     }
@@ -249,6 +157,7 @@ void    fsh_loop(char **environ)
         // ft_printf("$> ");
         
         // status = fsh_read_line(FD_MIN_SHELL, line);             // read next str
+         printf("-4\n");
         status = readline(line);   
         // printf("%s\n", line);
         // fsh_split_line(line, args);                        // split args
@@ -290,6 +199,7 @@ int     main(int argc, char **argv)
     //Run command loop
     (void)argc;
     (void)argv;
+     printf("-5\n");
     fsh_loop(environ);
     // exit(0);
     return (0);
