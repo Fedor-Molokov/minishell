@@ -6,7 +6,7 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/17 15:48:00 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/17 16:23:00 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/17 19:44:29 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,16 +53,14 @@ int     fsh_echo(char **args, char **newenv, char **environ)
         if (ft_strchr(args[i], 34) || ft_strchr(args[i], 39))
         {
             tmp = ft_del_quotation(args[i]);
-            ft_printf("%s", tmp);
-            args[i + 1] ? ft_putchar(' ') : 1;
+            args[i + 1] == NULL ? ft_printf("%s\n", tmp) : ft_printf("%s ", tmp);
             free(tmp);
             i++;
             continue ;
         }
-        ft_printf("%s", args[i]);
-        args[i + 1] ? ft_putchar(' ') : 1;
+        args[i + 1] == NULL ? ft_printf("%s\n", args[i]) : ft_printf("%s ", args[i]);
         i++;
     }
-    ft_putchar('\n');
+    ft_memdel(args);
     return (1);
 }

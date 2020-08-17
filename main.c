@@ -6,7 +6,7 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/11 16:56:15 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/17 19:05:36 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/17 20:15:46 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,43 +29,11 @@ void    ft_error(char *str)
     fsh_exit(NULL, NULL, NULL);
 }
 
-char    ft_find_split_char(char *line)
-{
-    char    sym;
-
-    if (ft_strchr(line, ' '))
-        sym = ' ';
-    else if (ft_strchr(line, '\t'))
-        sym = '\t';
-    else if (ft_strchr(line, '\r'))
-        sym = '\r';
-    else if (ft_strchr(line, '\n'))         // ??
-        sym = '\n';
-    else if (ft_strchr(line, '\a'))
-        sym = '\a';
-    else
-        sym = 0;
-    return (sym);
-}
-
 char    *fsh_read_line(int fd, char *line)
 {
     if ((get_next_line(fd, &line)) < 0)
         ft_error("\nfsh: readline error\n");
     return(line);
-}
-
-int     fsh_split_line(char *line, char **args)
-{
-    char    sym;
-    int     i;
-
-    if ((sym = ft_find_split_char(line)))
-        args = ft_strsplit(line, sym);          // need to process the argument string normally
-    i = 0;
-    // while(args[i])                              //
-        // ft_printf("%s\n", args[i++]);           // test
-    return(EXIT_SUCCESS);
 }
 
 // void    fsh_loop(char **newenv, char **environ)
@@ -101,31 +69,76 @@ int     fsh_split_line(char *line, char **args)
 //     status = fsh_execute(args, newenv, environ);                           // return status var
 // }
 
-
-
-
 void    fsh_loop(char **newenv, char **environ)
 {
     int     status;
     char    *line;
     char    **args;
+    // int     count;
     
+    // count = 0;
     status = 1;
     while(status)
     {
         signal(SIGINT, ft_handler);
         ft_printf("$> ");
-        
+
         line = fsh_read_line(FD_MIN_SHELL, line);           // read next str
         // printf("%s\n", line);
-        // fsh_split_line(line, args);                        
         args = ft_strsplit(line, ' ');                      // split args
-        
+        // if (count > 0 && args[0][0] == 'i' && args[0][1] == 't')
+        // {
+        //     ft_bzeroall(args[0]);
+        //     ft_bzeroall(args[1]);
+        // }
+        //     char	*path;
+        // FILE	*file;
+        // path = ft_memalloc(BUFSIZ);
+        // getcwd(path, BUFSIZ);
+        // file = fopen(path, "r");
+        // fflush(file);
+        // free(path);
         status = fsh_execute(args, newenv, environ);        // return status var
+        // ft_memdel(args);
+        // ft_bzeroall(line);
+        // int i = 0;
+        // while(args[i])
+        // {
+        //     ft_bzeroall(args[i]);
+        //     i++;
+        // }
+        // count++;
     }
 }
 
 
+
+
+
+// void    fsh_loop(char **newenv, char **environ)
+// {
+//     int     status;
+//     char    *line;
+//     char    **args;
+    
+//     status = 1;
+//     // while(status)
+//     // {
+//         // signal(SIGINT, ft_handler);
+//         // ft_printf("$> ");
+        
+//         // line = fsh_read_line(FD_MIN_SHELL, line);           // read next str
+//         // printf("%s\n", line);
+//         // fsh_split_line(line, args);             
+//         ft_strcpy(line, "echo it works");          
+//         args = ft_strsplit(line, ' ');
+//         status = fsh_execute(args, newenv, environ);        
+                     
+//         ft_strcpy(line, "pwd");          
+//         args = ft_strsplit(line, ' ');                      
+//         status = fsh_execute(args, newenv, environ);        // return status var
+//     // }
+// }
 
 
 

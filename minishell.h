@@ -6,7 +6,7 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/11 16:57:35 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/17 16:23:11 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/17 19:24:12 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 # include <stdio.h>
 # include "libft/ft_printf/ft_printf.h"
 
-#define FSH_RL_BUFSIZE  1024
+#define FSH_RL_BUFSIZE  1
 #define FD_MIN_SHELL    0
 
 int     fsh_execute(char **args, char **newenv, char **environ);
