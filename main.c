@@ -6,7 +6,7 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/11 16:56:15 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/17 21:33:45 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/17 21:45:29 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ char    *fsh_read_line(int fd, char *line)
 //     char    *line;
 //     char    **args;
 
-//     args = malloc(sizeof(char *) * (2 + 1));
+//     args = malloc(sizeof(char *) * (1 + 1));
     
 //     // p[0] = ft_strdup("cd");
 //     // p[1] = ft_strdup("../");
@@ -57,12 +57,12 @@ char    *fsh_read_line(int fd, char *line)
 //         // i++;       
 //     // environ[i] = ft_strdup("QWE=");  
 
-//     args[0] = ft_strdup("unsetenv");
-//     args[1] = ft_strdup("GROUP");
+//     args[0] = ft_strdup("\t");
+//     // args[1] = ft_strdup("GROUP");
 //     // args[1] = ft_strdup("wergb\"\"qwer");
 //     // args[3] = NULL;
 //     // args[1] = ft_strdup("QWE");
-//     args[2] = NULL;
+//     args[1] = NULL;
 //     // args[2] = ft_strdup("zxc");
 //     // args[3] = NULL;
 //     status = fsh_execute(args, newenv, environ);                           // return status var

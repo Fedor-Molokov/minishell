@@ -6,7 +6,7 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/13 00:59:49 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/17 21:14:19 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/17 21:45:19 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,14 @@ int             fsh_setenv(char **args, char **newenv, char **environ);
 int             fsh_unsetenv(char **args, char **newenv, char **environ);
 int             fsh_env(char **args, char **newenv, char **environ);
 int             fsh_exit(char **args, char **newenv, char **environ);
+int             fsh_tab(char **args, char **newenv, char **environ);
 static int  (*builtin_func[]) (char **, char **, char **) = 
 {
-    &fsh_cd, &fsh_help, &fsh_exit, &fsh_env, &fsh_setenv, &fsh_unsetenv, &fsh_echo
+    &fsh_cd, &fsh_help, &fsh_exit, &fsh_env, &fsh_setenv, &fsh_unsetenv, &fsh_echo, &fsh_tab
 };
 static char *builtin_str[] = 
 {
-    "cd", "help", "exit", "env", "setenv", "unsetenv", "echo"
+    "cd", "help", "exit", "env", "setenv", "unsetenv", "echo", "\t"
 };
 extern char *prevpath;
 extern char *addpath;
@@ -80,6 +81,14 @@ int     fsh_execute(char **args, char **newenv, char **environ)
     return (fsh_launch(args));
 }
 
+int     fsh_tab(char **args, char **newenv, char **environ)
+{
+    (void)args;
+    (void)newenv;
+    (void)environ;
+    return (1);
+}
+
 int     fsh_exit(char **args, char **newenv, char **environ)
 {
     (void)args;
@@ -90,7 +99,7 @@ int     fsh_exit(char **args, char **newenv, char **environ)
 
 int     fsh_cd(char **args, char **newenv, char **environ)
 {
-    char    *tmp;
+    char    *tmp = NULL;
     
     if (args[1] == NULL) 
         ft_error("fsh: expected argument to \"cd\"\n");
