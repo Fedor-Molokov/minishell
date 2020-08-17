@@ -6,7 +6,7 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/13 00:59:49 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/18 02:22:22 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/18 02:32:17 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,18 @@ int     fsh_num_builtins()
   return (sizeof(builtin_str) / sizeof(char *));
 }
 
+void     ft_realloc(pid_t *pids)
+{
+    pid_t   *tmp;
+
+    countaloc++;
+    tmp = ft_memdup(pids);
+    free(pids);
+    pids = ft_memalloc(BUFSIZ * countaloc);
+    pids = ft_memcpy(pids, tmp, (BUFSIZ * countaloc));
+    free(tmp);
+}
+
 void    fsh_execve(char *path, char **args, char **environ)
 {
     if (execve(path, args, environ) == -1)
@@ -64,21 +76,19 @@ void    fsh_launch_next(char **args, char **environ)
         if (access(path, 0) != -1)
             fsh_execve(path, args, environ);
         else
-            ft_printf("%s: Command not found.\n", args[0]);
-        free(path);
+        {
+            free(path);
+            path = ft_memalloc(BUFSIZ);
+            getcwd(path, BUFSIZ);
+            path = ft_strjoin(path, "/");
+            path = ft_strjoin(path, args[0]);
+            if (access(path, 0) != -1)
+                fsh_execve(path, args, environ);
+            else
+                ft_printf("%s: Command not found.\n", args[0]);
+        }
     }
-}
-
-int     ft_realloc(pid_t *pids)
-{
-    pid_t   *tmp;
-
-    countaloc++;
-    tmp = ft_memdup(pids);
-    free(pids);
-    pids = ft_memalloc(BUFSIZ * countaloc);
-    pids = ft_memcpy(pids, tmp, (BUFSIZ * countaloc));
-    free(tmp);
+    free(path);
 }
 
 int     fsh_launch(char **args, char **environ)
