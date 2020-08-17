@@ -6,7 +6,7 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/13 00:59:49 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/18 01:13:14 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/18 02:22:22 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,11 @@ static char *builtin_str[] =
 {
     "cd", "help", "exit", "env", "setenv", "unsetenv", "echo", "\t"
 };
-extern char *prevpath;
-extern char *addpath;
+extern char     *prevpath;
+extern char     *addpath;
+extern int      countpid;
+extern int      countaloc;
+extern pid_t    *pids;
 
 int     fsh_num_builtins()
 {
@@ -39,7 +42,8 @@ void    fsh_execve(char *path, char **args, char **environ)
 {
     if (execve(path, args, environ) == -1)
     {
-        perror("fsh");
+        // perror("fsh");
+        ft_printf("fsh: execve error\n");
     }
     exit(EXIT_FAILURE);
 }
@@ -65,13 +69,25 @@ void    fsh_launch_next(char **args, char **environ)
     }
 }
 
+int     ft_realloc(pid_t *pids)
+{
+    pid_t   *tmp;
+
+    countaloc++;
+    tmp = ft_memdup(pids);
+    free(pids);
+    pids = ft_memalloc(BUFSIZ * countaloc);
+    pids = ft_memcpy(pids, tmp, (BUFSIZ * countaloc));
+    free(tmp);
+}
+
 int     fsh_launch(char **args, char **environ)
 {
     pid_t   pid;
     pid_t   wpid;
     int     status;
 
-    status = 1;
+    // status = 1;
     pid = fork();
     if (pid == 0) 
     {
@@ -83,11 +99,17 @@ int     fsh_launch(char **args, char **environ)
     } 
     else if (pid < 0)
     {
-        perror("fsh");
+        ft_printf("fsh: fork error\n");
     }
     else
     {
-        while (!WIFEXITED(status) && WIFSIGNALED(status))
+        // pids[countpid] = (pid_t)malloc(sizeof(pid_t) * 1);
+        pids[countpid] = pid;
+        if (countpid == (BUFSIZ * countaloc))
+            ft_realloc(pids);
+        countpid++;
+        wpid = waitpid(pid, &status, WUNTRACED);
+        while (!WIFEXITED(status) && !WIFSIGNALED(status))
             wpid = waitpid(pid, &status, WUNTRACED);
         
         // do
@@ -131,6 +153,11 @@ int     fsh_exit(char **args, char **newenv, char **environ)
     (void)args;
     (void)newenv;
     (void)environ;
+    while(countpid > 0)
+    {
+        kill(pids[countpid], SIGTERM);
+        countpid--;
+    }
     return (0);
 }
 
@@ -179,7 +206,7 @@ int     fsh_cd(char **args, char **newenv, char **environ)
         }
         else if (chdir(args[1]) != 0)
         {
-            ft_error("fsh: expected argument to \"cd\"\n");
+            ft_printf("%s: No such file or directory.\n", args[1]);
             return (1);
         }
     }

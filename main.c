@@ -6,7 +6,7 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/11 16:56:15 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/18 00:37:12 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/18 02:12:36 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,9 @@
 char    *prevpath;
 char    *addpath;
 int     cat;
+int     countaloc;
+int     countpid;
+pid_t   *pids;
 
 void    ft_handler(int s)
 {
@@ -98,6 +101,10 @@ int     main(int argc, char **argv)
     // newenv = fsh_config((const char **)environ);
     //Run command loop
     cat = 0;
+    countaloc = 1;
+    countpid = 0;
+    // pids = (pid_t *)malloc(sizeof(pid_t) * BUFSIZ);
+    pids = ft_memalloc(BUFSIZ);
     prevpath = ft_memalloc(BUFSIZ + 1);
     addpath = ft_memalloc(BUFSIZ + 1);
     (void)argc;

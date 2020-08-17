@@ -6,7 +6,7 @@
 #    By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/09/20 20:42:18 by dmarsell          #+#    #+#              #
-#    Updated: 2020/08/14 22:26:48 by dmarsell         ###   ########.fr        #
+#    Updated: 2020/08/18 02:01:17 by dmarsell         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,7 +29,7 @@ CFLAGS = -Wall -Wextra -g
 HD = libft.h
 
 SRC = ft_atoi.c	ft_memccpy.c	ft_putendl.c	ft_strcmp.c	ft_strlen.c	ft_strrchr.c\
-ft_bzero.c	ft_memchr.c	ft_putendl_fd.c	ft_strcpy.c	ft_strmap.c	ft_strsplit.c\
+ft_bzero.c	ft_memchr.c	ft_putendl_fd.c	ft_strcpy.c	ft_strmap.c	ft_strsplit.c ft_memdup.c\
 ft_isalnum.c	ft_memcmp.c	ft_putnbr.c	ft_strdel.c	ft_strmapi.c	ft_strstr.c\
 ft_isalpha.c	ft_memcpy.c	ft_putnbr_fd.c	ft_strdup.c	ft_strncat.c	ft_strsub.c\
 ft_isascii.c	ft_memdel.c	ft_putstr.c	ft_strequ.c	ft_strncmp.c	ft_strtrim.c\

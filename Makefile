@@ -6,7 +6,7 @@
 #    By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/07/24 22:57:41 by dmarsell          #+#    #+#              #
-#    Updated: 2020/08/17 21:19:05 by dmarsell         ###   ########.fr        #
+#    Updated: 2020/08/18 02:18:32 by dmarsell         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,9 +29,9 @@ SRC = main.c \
 		echo.c \
 		env.c
 
-all: $(OBJ_DIR) $(NAME)
+all: $(NAME)
 
-$(NAME): $(OBJ)
+$(NAME): $(OBJ_DIR) $(OBJ)
 	@$(CC) $(OBJ) $(LIBFT_DIR)/$(LIBFT) -o $(NAME)
 	@echo "\033[32m [OK] \033[0m\033[32mCompiling execution file:\033[36m " $(NAME)
 
