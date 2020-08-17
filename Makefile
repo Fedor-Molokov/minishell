@@ -6,7 +6,7 @@
 #    By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/07/24 22:57:41 by dmarsell          #+#    #+#              #
-#    Updated: 2020/08/14 22:11:39 by dmarsell         ###   ########.fr        #
+#    Updated: 2020/08/17 15:48:14 by dmarsell         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,6 +26,7 @@ OBJ = $(addprefix $(OBJ_DIR)/,$(SRC:.c=.o))
 
 SRC = main.c \
 		builtin.c \
+		echo.c \
 		env.c
 
 all: $(NAME)

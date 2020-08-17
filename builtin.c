@@ -6,7 +6,7 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/13 00:59:49 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/15 08:09:13 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/17 15:50:55 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -227,6 +227,11 @@ int     fsh_echo(char **args, char **newenv, char **environ)
     char    *tmp;
     int     i;
     
+    if (args[1][0] == '$')
+    {
+        tmp = ft_strdup(&args[i][1]);
+            return (ft_echo_print_val(tmp, environ));
+    }
     i = 1;
     while (args[i])
     {
