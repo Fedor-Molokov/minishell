@@ -6,7 +6,7 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/17 15:48:00 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/17 16:17:03 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/17 16:23:00 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,5 +34,35 @@ int    ft_echo_print_val(char *var, char **env)
     }
     ft_printf("%s: Undefined variable.\n", var);
     free(var);
+    return (1);
+}
+
+int     fsh_echo(char **args, char **newenv, char **environ)
+{
+    char    *tmp;
+    int     i;
+
+    i = 1;
+    while (args[i])
+    {
+        if (args[1][0] == '$')
+        {
+            tmp = ft_strdup(&args[1][1]);
+            return (ft_echo_print_val(tmp, environ));
+        }
+        if (ft_strchr(args[i], 34) || ft_strchr(args[i], 39))
+        {
+            tmp = ft_del_quotation(args[i]);
+            ft_printf("%s", tmp);
+            args[i + 1] ? ft_putchar(' ') : 1;
+            free(tmp);
+            i++;
+            continue ;
+        }
+        ft_printf("%s", args[i]);
+        args[i + 1] ? ft_putchar(' ') : 1;
+        i++;
+    }
+    ft_putchar('\n');
     return (1);
 }

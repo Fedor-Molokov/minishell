@@ -6,7 +6,7 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/14 22:25:09 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/14 22:26:14 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/17 17:17:32 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,13 @@ void	ft_bzeroall(char *buf)
 {
 	size_t		i;
 
-	i = 0;
-	while (buf[i])
+	if (buf)
 	{
-		buf[i] = '\0';
-		i++;
+		i = 0;
+		while (buf[i])
+		{
+			buf[i] = '\0';
+			i++;
+		}
 	}
 }

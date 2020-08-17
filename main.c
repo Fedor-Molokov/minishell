@@ -6,11 +6,14 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/11 16:56:15 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/17 16:17:32 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/17 17:19:23 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "minishell.h"
+
+char    *prevpath;
+char    *addpath;
 
 void    ft_handler(int s)
 {
@@ -72,7 +75,7 @@ void    fsh_loop(char **newenv, char **environ)
     int     status;
 
     status = 1;
-    // args = malloc(sizeof(char *) * (2 + 1));
+    // args = malloc(sizeof(char *) * (3 + 1));
     while(status)
     {
         signal(SIGINT, ft_handler);
@@ -96,8 +99,8 @@ void    fsh_loop(char **newenv, char **environ)
             // i++;       
         // environ[i] = ft_strdup("QWE=");  
 
-        // args[0] = ft_strdup("echo");
-        // args[1] = ft_strdup("$USER");
+        // args[0] = ft_strdup("cd");
+        // args[1] = ft_strdup("~");
         // args[1] = ft_strdup("wergb\"\"qwer");
         // args[3] = NULL;
         // args[1] = ft_strdup("QWE");
@@ -115,6 +118,10 @@ int     main(int argc, char **argv)
     // Load config files
     // newenv = fsh_config((const char **)environ);
     //Run command loop
+    prevpath = ft_memalloc(BUFSIZ + 1);
+    prevpath = NULL;
+    addpath = ft_memalloc(BUFSIZ + 1);
+    addpath = NULL;
     (void)argc;
     (void)argv;
     fsh_loop(newenv, environ);

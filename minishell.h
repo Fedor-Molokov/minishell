@@ -6,7 +6,7 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/11 16:57:35 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/17 15:51:09 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/17 16:23:11 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@
 #define FD_MIN_SHELL    0
 
 int     fsh_execute(char **args, char **newenv, char **environ);
+int     fsh_echo(char **args, char **newenv, char **environ);
 int     ft_compare(char *name, char *value, char **env);
 void    ft_print_env(char **env, char *var, int len);
 int     ft_echo_print_val(char *var, char **env);

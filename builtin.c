@@ -6,7 +6,7 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/13 00:59:49 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/17 16:05:11 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/17 17:17:39 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ static char *builtin_str[] =
 {
     "cd", "help", "exit", "env", "setenv", "unsetenv", "echo"
 };
+extern char *prevpath;
+extern char *addpath;
 
 int     fsh_num_builtins()
 {
@@ -95,15 +97,46 @@ int     fsh_cd(char **args, char **newenv, char **environ)
     
     if (args[1] == NULL) 
         ft_error("fsh: expected argument to \"cd\"\n");
+    else if (args[1] == '-')
+    {
+        if (prevpath == NULL)
+        {
+            ft_printf("fsh: No such file or directory\n");
+            return (1);
+        }
+        else
+        {
+            if (addpath)
+            {
+                ft_bzeroall(prevpath);
+                getcwd(prevpath, BUFSIZ);
+                chdir(addpath);
+                addpath = NULL;
+            }
+            else
+            {
+                ft_bzeroall(addpath);
+                getcwd(addpath, BUFSIZ);
+                chdir(prevpath);
+            }
+        }
+    }
     else
     {
+        ft_bzeroall(prevpath);
+        getcwd(prevpath, BUFSIZ);
+        addpath != NULL ? addpath = NULL : 1;
         if (args[1][0] == '~' && args[1][1] == '\0')
         {
             tmp = ft_find_home(environ, tmp);
             chdir(tmp);
+            free(tmp);
         }
         else if (chdir(args[1]) != 0)
+        {
             ft_error("fsh: expected argument to \"cd\"\n");
+            return (1);
+        }
     }
     (void)newenv;
     (void)environ;
@@ -219,35 +252,5 @@ int     fsh_unsetenv(char **args, char **newenv, char **environ)
     if (args[1])
         ft_find_var(args[1], environ);
     (void)newenv;
-    return (1);
-}
-
-int     fsh_echo(char **args, char **newenv, char **environ)
-{
-    char    *tmp;
-    int     i;
-
-    i = 1;
-    while (args[i])
-    {
-        if (args[1][0] == '$')
-        {
-            tmp = ft_strdup(&args[1][1]);
-            return (ft_echo_print_val(tmp, environ));
-        }
-        if (ft_strchr(args[i], 34) || ft_strchr(args[i], 39))
-        {
-            tmp = ft_del_quotation(args[i]);
-            ft_printf("%s", tmp);
-            args[i + 1] ? ft_putchar(' ') : 1;
-            free(tmp);
-            i++;
-            continue ;
-        }
-        ft_printf("%s", args[i]);
-        args[i + 1] ? ft_putchar(' ') : 1;
-        i++;
-    }
-    ft_putchar('\n');
     return (1);
 }
