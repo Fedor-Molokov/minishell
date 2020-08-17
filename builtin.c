@@ -6,7 +6,7 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/13 00:59:49 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/17 17:17:39 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/17 19:04:53 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,21 +97,21 @@ int     fsh_cd(char **args, char **newenv, char **environ)
     
     if (args[1] == NULL) 
         ft_error("fsh: expected argument to \"cd\"\n");
-    else if (args[1] == '-')
+    else if (args[1][0] == '-' && args[1][1] == '\0')
     {
-        if (prevpath == NULL)
+        if (prevpath[0] == '\0' && addpath[0] == '\0')
         {
             ft_printf("fsh: No such file or directory\n");
             return (1);
         }
         else
         {
-            if (addpath)
+            if (addpath[0] != '\0')
             {
                 ft_bzeroall(prevpath);
                 getcwd(prevpath, BUFSIZ);
                 chdir(addpath);
-                addpath = NULL;
+                ft_bzeroall(addpath);
             }
             else
             {
@@ -124,8 +124,8 @@ int     fsh_cd(char **args, char **newenv, char **environ)
     else
     {
         ft_bzeroall(prevpath);
+        ft_bzeroall(addpath);
         getcwd(prevpath, BUFSIZ);
-        addpath != NULL ? addpath = NULL : 1;
         if (args[1][0] == '~' && args[1][1] == '\0')
         {
             tmp = ft_find_home(environ, tmp);

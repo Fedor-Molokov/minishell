@@ -6,7 +6,7 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/11 16:56:15 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/17 17:19:23 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/17 19:05:36 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,48 +68,66 @@ int     fsh_split_line(char *line, char **args)
     return(EXIT_SUCCESS);
 }
 
+// void    fsh_loop(char **newenv, char **environ)
+// {
+//     int     status;
+//     char    *line;
+//     char    **args;
+
+
+//     args = malloc(sizeof(char *) * (2 + 1));
+    
+//     // p[0] = ft_strdup("cd");
+//     // p[1] = ft_strdup("../");
+//     // p[2] = NULL;
+    
+//     // p[0] = ft_strdup("help");
+//     // p[0] = ft_strdup("ls");
+//     // p[1] = NULL;
+    
+//     // int i = 0;
+//     // while(environ[i])
+//         // i++;       
+//     // environ[i] = ft_strdup("QWE=");  
+
+//     args[0] = ft_strdup("cd");
+//     args[1] = ft_strdup("-");
+//     // args[1] = ft_strdup("wergb\"\"qwer");
+//     // args[3] = NULL;
+//     // args[1] = ft_strdup("QWE");
+//     args[2] = NULL;
+//     // args[2] = ft_strdup("zxc");
+//     // args[3] = NULL;
+//     status = fsh_execute(args, newenv, environ);                           // return status var
+// }
+
+
+
+
 void    fsh_loop(char **newenv, char **environ)
 {
+    int     status;
     char    *line;
     char    **args;
-    int     status;
-
+    
     status = 1;
-    // args = malloc(sizeof(char *) * (3 + 1));
     while(status)
     {
         signal(SIGINT, ft_handler);
         ft_printf("$> ");
         
-        line = fsh_read_line(FD_MIN_SHELL, line);             // read next str
+        line = fsh_read_line(FD_MIN_SHELL, line);           // read next str
         // printf("%s\n", line);
-        // fsh_split_line(line, args);                        // split args
-        args = ft_strsplit(line, ' ');
+        // fsh_split_line(line, args);                        
+        args = ft_strsplit(line, ' ');                      // split args
         
-        // p[0] = ft_strdup("cd");
-        // p[1] = ft_strdup("../");
-        // p[2] = NULL;
-        
-        // p[0] = ft_strdup("help");
-        // p[0] = ft_strdup("ls");
-        // p[1] = NULL;
-        
-        // int i = 0;
-        // while(environ[i])
-            // i++;       
-        // environ[i] = ft_strdup("QWE=");  
-
-        // args[0] = ft_strdup("cd");
-        // args[1] = ft_strdup("~");
-        // args[1] = ft_strdup("wergb\"\"qwer");
-        // args[3] = NULL;
-        // args[1] = ft_strdup("QWE");
-        // args[2] = NULL;
-        // args[2] = ft_strdup("zxc");
-        // args[3] = NULL;
-        status = fsh_execute(args, newenv, environ);                           // return status var
+        status = fsh_execute(args, newenv, environ);        // return status var
     }
 }
+
+
+
+
 
 int     main(int argc, char **argv)
 {
@@ -119,9 +137,7 @@ int     main(int argc, char **argv)
     // newenv = fsh_config((const char **)environ);
     //Run command loop
     prevpath = ft_memalloc(BUFSIZ + 1);
-    prevpath = NULL;
     addpath = ft_memalloc(BUFSIZ + 1);
-    addpath = NULL;
     (void)argc;
     (void)argv;
     fsh_loop(newenv, environ);
