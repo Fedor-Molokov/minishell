@@ -6,7 +6,7 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/13 00:59:49 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/18 00:13:00 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/18 01:13:14 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,20 +35,51 @@ int     fsh_num_builtins()
   return (sizeof(builtin_str) / sizeof(char *));
 }
 
-int     fsh_launch(char **args)
+void    fsh_execve(char *path, char **args, char **environ)
 {
-    pid_t pid;
-    pid_t wpid;
-    int   status;
+    if (execve(path, args, environ) == -1)
+    {
+        perror("fsh");
+    }
+    exit(EXIT_FAILURE);
+}
 
+void    fsh_launch_next(char **args, char **environ)
+{
+    char    *path;
+    
+    path = ft_strdup("/usr/bin/");
+    path = ft_strjoin(path, args[0]);
+    if (access(path, 0) != -1)
+        fsh_execve(path, args, environ);
+    else
+    {
+        free(path);
+        path = ft_strdup("/bin/");
+        path = ft_strjoin(path, args[0]);
+        if (access(path, 0) != -1)
+            fsh_execve(path, args, environ);
+        else
+            ft_printf("%s: Command not found.\n", args[0]);
+        free(path);
+    }
+}
+
+int     fsh_launch(char **args, char **environ)
+{
+    pid_t   pid;
+    pid_t   wpid;
+    int     status;
+
+    status = 1;
     pid = fork();
     if (pid == 0) 
     {
-        if (execvp(args[0], args) == -1)
-        {
-        perror("fsh");
-        }
-        exit(EXIT_FAILURE);
+        fsh_launch_next(args, environ);
+        // if (execvp(args[0], args) == -1)
+        // {
+        // perror("fsh");
+        // }
     } 
     else if (pid < 0)
     {
@@ -56,11 +87,14 @@ int     fsh_launch(char **args)
     }
     else
     {
-        do
-        {
-        wpid = waitpid(pid, &status, WUNTRACED);
-        } 
-        while (!WIFEXITED(status) && !WIFSIGNALED(status));
+        while (!WIFEXITED(status) && WIFSIGNALED(status))
+            wpid = waitpid(pid, &status, WUNTRACED);
+        
+        // do
+        // {
+        // wpid = waitpid(pid, &status, WUNTRACED);
+        // } 
+        // while (!WIFEXITED(status) && !WIFSIGNALED(status));
     }
     return (1);
 }
@@ -81,7 +115,7 @@ int     fsh_execute(char **args, char **newenv, char **environ)
         i++;   
     if (ft_strcmp(args[0], builtin_str[i]) == 0)
         return ((*builtin_func[i])(args, newenv, environ));
-    return (fsh_launch(args));
+    return (fsh_launch(args, environ));
 }
 
 int     fsh_tab(char **args, char **newenv, char **environ)

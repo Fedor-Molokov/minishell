@@ -6,7 +6,7 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/11 16:56:15 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/18 00:16:23 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/18 00:37:12 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ void    ft_handler(int s)
     cat == 0 ? write(1, "\r$>   ", 6) : 1;
     cat == 0 ? write(1, "\n$> ", 4) : 1;
     cat == 0 ? write(1, "\r$> ", 4) : 1;
-    
     cat == 1 ? write(1, "\r", 1) : 1;
     cat == 1 ? cat = 0 : 1;
 }
@@ -61,7 +60,7 @@ char    *fsh_read_line(int fd, char *line)
 //         // i++;       
 //     // environ[i] = ft_strdup("QWE=");  
 
-//     args[0] = ft_strdup("\n");
+//     args[0] = ft_strdup("ls");
 //     // args[1] = ft_strdup("GROUP");
 //     // args[1] = ft_strdup("wergb\"\"qwer");
 //     // args[3] = NULL;
