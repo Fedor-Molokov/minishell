@@ -6,7 +6,7 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/11 16:56:15 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/17 21:45:29 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/18 00:16:23 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,17 @@
 
 char    *prevpath;
 char    *addpath;
+int     cat;
 
 void    ft_handler(int s)
 {
     signal(SIGINT, ft_handler);
-    write(1, "\r$>   ", 6);
-    write(1, "\r$> ", 4);
-    write(1, "\n$> ", 4);
+    cat == 0 ? write(1, "\r$>   ", 6) : 1;
+    cat == 0 ? write(1, "\n$> ", 4) : 1;
+    cat == 0 ? write(1, "\r$> ", 4) : 1;
+    
+    cat == 1 ? write(1, "\r", 1) : 1;
+    cat == 1 ? cat = 0 : 1;
 }
 
 void    ft_error(char *str)
@@ -57,7 +61,7 @@ char    *fsh_read_line(int fd, char *line)
 //         // i++;       
 //     // environ[i] = ft_strdup("QWE=");  
 
-//     args[0] = ft_strdup("\t");
+//     args[0] = ft_strdup("\n");
 //     // args[1] = ft_strdup("GROUP");
 //     // args[1] = ft_strdup("wergb\"\"qwer");
 //     // args[3] = NULL;
@@ -81,6 +85,8 @@ void    fsh_loop(char **newenv, char **environ)
         ft_printf("$> ");
         line = fsh_read_line(FD_MIN_SHELL, line);           // read next str
         args = ft_strsplit(line, ' ');                      // split args
+        // if (args[0] && (ft_strcmp(args[0], "cat") == 0) && args[1] == NULL)
+        //     cat = 1;
         status = fsh_execute(args, newenv, environ);        // return status var
     }
 }
@@ -92,6 +98,7 @@ int     main(int argc, char **argv)
     // Load config files
     // newenv = fsh_config((const char **)environ);
     //Run command loop
+    cat = 0;
     prevpath = ft_memalloc(BUFSIZ + 1);
     addpath = ft_memalloc(BUFSIZ + 1);
     (void)argc;

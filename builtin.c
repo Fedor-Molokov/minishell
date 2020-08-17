@@ -6,7 +6,7 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/13 00:59:49 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/17 21:45:19 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/18 00:13:00 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,9 +67,12 @@ int     fsh_launch(char **args)
 
 int     fsh_execute(char **args, char **newenv, char **environ)
 {
-    int     i;
-    int     count;
+    int             i;
+    int             count;
+    extern int      cat;
     
+    if (args[0] && (ft_strcmp(args[0], "cat") == 0) && args[1] == NULL)
+        cat = 1;
     count = fsh_num_builtins() - 1;
     if (args[0] == NULL)
         return (1);
