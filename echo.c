@@ -6,7 +6,7 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/17 15:48:00 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/17 15:58:18 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/17 16:17:03 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int    ft_echo_print_val(char *var, char **env)
     while(env[i])
     {
         equally = ft_strnchr(env[i], '=');
-        if (!(ft_strcmp(var, &env[i][equally + 1])))
+        if (!(ft_strncmp(var, env[i], equally)))
         {
             value = ft_strdup(&env[i][equally + 1]);
             ft_printf("%s\n", value);
@@ -32,7 +32,7 @@ int    ft_echo_print_val(char *var, char **env)
         }
         i++;  
     }
-    ft_printf("%s: Undefined variable.", var);
+    ft_printf("%s: Undefined variable.\n", var);
     free(var);
     return (1);
 }
