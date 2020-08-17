@@ -6,7 +6,7 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/13 05:29:13 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/17 21:19:44 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/17 21:33:28 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ int     ft_sort_env(char **env, int i)
         env[i] = NULL;
         return (1);
     }
-    while(env[i][0])
+    while(env[i])
     {
         env[i] = env[i + 1];
         i++;
