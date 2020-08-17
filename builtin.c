@@ -6,7 +6,7 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/13 00:59:49 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/17 19:04:53 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/17 21:14:19 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ int     fsh_launch(char **args)
     pid = fork();
     if (pid == 0) 
     {
-        // Child process
         if (execvp(args[0], args) == -1)
         {
         perror("fsh");
@@ -52,12 +51,10 @@ int     fsh_launch(char **args)
     } 
     else if (pid < 0)
     {
-        // Error forking
         perror("fsh");
     }
     else
     {
-        // Parent process
         do
         {
         wpid = waitpid(pid, &status, WUNTRACED);
@@ -126,9 +123,11 @@ int     fsh_cd(char **args, char **newenv, char **environ)
         ft_bzeroall(prevpath);
         ft_bzeroall(addpath);
         getcwd(prevpath, BUFSIZ);
-        if (args[1][0] == '~' && args[1][1] == '\0')
+        if (args[1][0] == '~')
         {
             tmp = ft_find_home(environ, tmp);
+            if (args[1][1] != '\0')
+                tmp = ft_strjoin(tmp, &args[1][1]); 
             chdir(tmp);
             free(tmp);
         }
