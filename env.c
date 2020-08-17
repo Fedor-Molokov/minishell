@@ -6,7 +6,7 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/13 05:29:13 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/15 07:49:35 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/17 21:19:44 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,7 +171,7 @@ void    ft_print_env(char **env, char *var, int len)
     i = 0;
     while(env[i] && var == NULL)
     {
-        ft_printf("%d = %s\n", i, env[i]); 
+        ft_printf("%s\n", env[i]); 
         i++;
     }
     while(env[i] && var != NULL)
@@ -179,15 +179,15 @@ void    ft_print_env(char **env, char *var, int len)
         if (!(ft_strncmp(env[i], var, len)))
         {
             flag = 1;
-            ft_printf("%d = %s\n", i, var);
+            ft_printf("%s\n", var);
             if (env[i + 1] == NULL)
                 break ;
             else
                 i++;
         }
-        ft_printf("%d = %s\n", i, env[i]); 
+        ft_printf("%s\n", env[i]); 
         i++;
     }
     if (var && flag == 0)
-        ft_printf("%d = %s\n", ++i, var);
+        ft_printf("%s\n", var);
 }
