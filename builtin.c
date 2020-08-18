@@ -6,7 +6,7 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/13 00:59:49 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/18 04:37:12 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/18 05:01:20 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ void    fsh_launch_next(char **args, char **environ)
                 path = ft_strjoin(path, args[0]);
                 if (access(path, 0) != -1)
                     fsh_execve(path, args, environ);
-                else
+                else if (!(args[0][0] == '\t'))
                     ft_printf("%s: Command not found.\n", args[0]);
             }
         }
