@@ -6,7 +6,7 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/13 00:59:49 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/18 02:32:17 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/18 04:29:30 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,28 +64,35 @@ void    fsh_launch_next(char **args, char **environ)
 {
     char    *path;
     
-    path = ft_strdup("/usr/bin/");
-    path = ft_strjoin(path, args[0]);
-    if (access(path, 0) != -1)
+    path = ft_strdup(args[0]);
+    if (access(args[0], 0) != -1)
         fsh_execve(path, args, environ);
     else
     {
         free(path);
-        path = ft_strdup("/bin/");
+        path = ft_memalloc(BUFSIZ);
+        getcwd(path, BUFSIZ);
+        path = ft_strjoin(path, "/");
         path = ft_strjoin(path, args[0]);
-        if (access(path, 0) != -1)
+        if ((access(path, 0) != -1))
             fsh_execve(path, args, environ);
         else
         {
             free(path);
-            path = ft_memalloc(BUFSIZ);
-            getcwd(path, BUFSIZ);
-            path = ft_strjoin(path, "/");
+            path = ft_strdup("/bin/");
             path = ft_strjoin(path, args[0]);
             if (access(path, 0) != -1)
                 fsh_execve(path, args, environ);
             else
-                ft_printf("%s: Command not found.\n", args[0]);
+            {
+                free(path);
+                path = ft_strdup("/usr/bin/");
+                path = ft_strjoin(path, args[0]);
+                if (access(path, 0) != -1)
+                    fsh_execve(path, args, environ);
+                else
+                    ft_printf("%s: Command not found.\n", args[0]);
+            }
         }
     }
     free(path);
@@ -176,7 +183,7 @@ int     fsh_cd(char **args, char **newenv, char **environ)
     char    *tmp = NULL;
     
     if (args[1] == NULL) 
-        ft_error("fsh: expected argument to \"cd\"\n");
+        ft_printf("fsh: expected argument to \"cd\"\n");
     else if (args[1][0] == '-' && args[1][1] == '\0')
     {
         if (prevpath[0] == '\0' && addpath[0] == '\0')
@@ -328,7 +335,10 @@ int     fsh_setenv(char **args, char **newenv, char **environ)
 int     fsh_unsetenv(char **args, char **newenv, char **environ)
 {
     if (args[1] == NULL)
+    {
         ft_printf("unsetenv: Too few arguments.\n");
+        return (1);
+    }
     if (ft_strchr(args[1], '='))
         return (1);
     if (args[1])

@@ -6,7 +6,7 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/11 16:56:15 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/18 02:12:36 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/18 04:24:19 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ char    *fsh_read_line(int fd, char *line)
 //         // i++;       
 //     // environ[i] = ft_strdup("QWE=");  
 
-//     args[0] = ft_strdup("ls");
+//     args[0] = ft_strdup("cd");
 //     // args[1] = ft_strdup("GROUP");
 //     // args[1] = ft_strdup("wergb\"\"qwer");
 //     // args[3] = NULL;
