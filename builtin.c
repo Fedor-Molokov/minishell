@@ -6,7 +6,7 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/13 00:59:49 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/18 05:36:19 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/18 06:38:09 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,10 +54,7 @@ void     ft_realloc(pid_t *pids)
 void    fsh_execve(char *path, char **args, char **environ)
 {
     if (execve(path, args, environ) == -1)
-    {
-        // perror("fsh");
         ft_printf("fsh: execve error\n");
-    }
     exit(EXIT_FAILURE);
 }
 
@@ -105,24 +102,14 @@ int     fsh_launch(char **args, char **environ)
     pid_t   wpid;
     int     status;
 
-    // status = 1;
     pid = fork();
     if (pid == 0) 
-    {
         fsh_launch_next(args, environ);
-        // if (execvp(args[0], args) == -1)
-        // {
-        // perror("fsh");
-        // }
-    } 
     else if (pid < 0)
-    {
         ft_printf("fsh: fork error\n");
-    }
     else
     {
         cat = 1;
-        // pids[countpid] = (pid_t)malloc(sizeof(pid_t) * 1);
         pids[countpid] = pid;
         if (countpid == (BUFSIZ * countaloc))
             ft_realloc(pids);
@@ -130,12 +117,6 @@ int     fsh_launch(char **args, char **environ)
         wpid = waitpid(pid, &status, WUNTRACED);
         while (!WIFEXITED(status) && !WIFSIGNALED(status))
             wpid = waitpid(pid, &status, WUNTRACED);
-        
-        // do
-        // {
-        // wpid = waitpid(pid, &status, WUNTRACED);
-        // } 
-        // while (!WIFEXITED(status) && !WIFSIGNALED(status));
     }
     return (1);
 }
