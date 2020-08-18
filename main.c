@@ -6,7 +6,7 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/11 16:56:15 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/18 04:59:34 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/18 05:12:06 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,19 @@ char    *fsh_read_line(int fd, char *line)
 //     status = fsh_execute(args, newenv, environ);                           // return status var
 // }
 
+void    ft_del_tabs(char *line)
+{
+    int     i;
+
+    i = 0;
+    while(line[i])
+    {
+        if (line[i] == '\t')
+            line[i] = ' ';
+        i++;
+    }
+}
+
 void    fsh_loop(char **newenv, char **environ)
 {
     int     status;
@@ -86,9 +99,8 @@ void    fsh_loop(char **newenv, char **environ)
         signal(SIGINT, ft_handler);
         ft_printf("$> ");
         line = fsh_read_line(FD_MIN_SHELL, line);           // read next str
+        ft_del_tabs(line);
         args = ft_strsplit(line, ' ');                      // split args
-        // if (args[0] && (ft_strcmp(args[0], "cat") == 0) && args[1] == NULL)
-        //     cat = 1;
         status = fsh_execute(args, newenv, environ);        // return status var
     }
 }
