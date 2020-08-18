@@ -6,7 +6,7 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/11 16:56:15 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/18 05:39:37 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/18 05:45:41 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,8 @@ int    ft_semi_colon_loop(char *line, char **args, char **environ)
     char    **semcolargs;
     
     status = 1;
+    if (line[0] == ';' && line[1] == '\0')
+        return(1);
     args = ft_strsplit(line, ';');
     i = 0;
     while(args[i] && status)
@@ -89,7 +91,7 @@ int    ft_semi_colon_loop(char *line, char **args, char **environ)
         status = fsh_execute(semcolargs, environ);
         i++;
     }
-    free(semcolargs);
+    // free(semcolargs);
     return(status);
 }
 
@@ -136,8 +138,11 @@ void    fsh_loop(char **environ)
         ft_del_tabs(line);
         if (ft_find_semi_colon(line))
             status = ft_semi_colon_loop(line, args, environ);
-        args = ft_strsplit(line, ' ');                      // split args
-        status = fsh_execute(args, environ);        // return status var
+        else
+        {
+            args = ft_strsplit(line, ' ');                      // split args
+            status = fsh_execute(args, environ);        // return status var
+        }
     }
 }
 
