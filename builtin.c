@@ -6,20 +6,20 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/13 00:59:49 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/18 05:01:20 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/18 05:36:19 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "minishell.h"
-int             fsh_cd(char **args, char **newenv, char **environ);
-int             fsh_help(char **args, char **newenv, char **environ);
-int             fsh_echo(char **args, char **newenv, char **environ);
-int             fsh_setenv(char **args, char **newenv, char **environ);
-int             fsh_unsetenv(char **args, char **newenv, char **environ);
-int             fsh_env(char **args, char **newenv, char **environ);
-int             fsh_exit(char **args, char **newenv, char **environ);
-int             fsh_tab(char **args, char **newenv, char **environ);
-static int  (*builtin_func[]) (char **, char **, char **) = 
+int             fsh_cd(char **args, char **environ);
+int             fsh_help(char **args, char **environ);
+int             fsh_echo(char **args, char **environ);
+int             fsh_setenv(char **args, char **environ);
+int             fsh_unsetenv(char **args, char **environ);
+int             fsh_env(char **args, char **environ);
+int             fsh_exit(char **args, char **environ);
+int             fsh_tab(char **args, char **environ);
+static int  (*builtin_func[]) (char **, char **) = 
 {
     &fsh_cd, &fsh_help, &fsh_exit, &fsh_env, &fsh_setenv, &fsh_unsetenv, &fsh_echo, &fsh_tab
 };
@@ -31,6 +31,7 @@ extern char     *prevpath;
 extern char     *addpath;
 extern int      countpid;
 extern int      countaloc;
+extern int      cat;
 extern pid_t    *pids;
 
 int     fsh_num_builtins()
@@ -120,6 +121,7 @@ int     fsh_launch(char **args, char **environ)
     }
     else
     {
+        cat = 1;
         // pids[countpid] = (pid_t)malloc(sizeof(pid_t) * 1);
         pids[countpid] = pid;
         if (countpid == (BUFSIZ * countaloc))
@@ -138,7 +140,7 @@ int     fsh_launch(char **args, char **environ)
     return (1);
 }
 
-int     fsh_execute(char **args, char **newenv, char **environ)
+int     fsh_execute(char **args, char **environ)
 {
     int             i;
     int             count;
@@ -153,22 +155,20 @@ int     fsh_execute(char **args, char **newenv, char **environ)
     while(ft_strcmp(args[0], builtin_str[i]) != 0 && i < count)
         i++;   
     if (ft_strcmp(args[0], builtin_str[i]) == 0)
-        return ((*builtin_func[i])(args, newenv, environ));
+        return ((*builtin_func[i])(args, environ));
     return (fsh_launch(args, environ));
 }
 
-int     fsh_tab(char **args, char **newenv, char **environ)
+int     fsh_tab(char **args, char **environ)
 {
     (void)args;
-    (void)newenv;
     (void)environ;
     return (1);
 }
 
-int     fsh_exit(char **args, char **newenv, char **environ)
+int     fsh_exit(char **args, char **environ)
 {
     (void)args;
-    (void)newenv;
     (void)environ;
     while(countpid > 0)
     {
@@ -194,7 +194,7 @@ int     ft_cd_home(char **args, char *tmp, char **environ)
     return (1);
 }
 
-int     fsh_cd(char **args, char **newenv, char **environ)
+int     fsh_cd(char **args, char **environ)
 {
     char    *tmp = NULL;
     
@@ -237,12 +237,11 @@ int     fsh_cd(char **args, char **newenv, char **environ)
             return (1);
         }
     }
-    (void)newenv;
     (void)environ;
     return (1);
 }
 
-int     fsh_help(char **args, char **newenv, char **environ)
+int     fsh_help(char **args, char **environ)
 {
     int i;
     printf("Fedor Molokov's FSH\n");
@@ -256,12 +255,11 @@ int     fsh_help(char **args, char **newenv, char **environ)
     }
     printf("Use the man command for information on other programs.\n");
     (void)args;
-    (void)newenv;
     (void)environ;
     return (1);
 }
 
-int     fsh_env(char **args, char **newenv, char **environ)
+int     fsh_env(char **args, char **environ)
 {
     int     len;
     int     equally;
@@ -291,11 +289,10 @@ int     fsh_env(char **args, char **newenv, char **environ)
             ft_print_env(environ, varname, equally);
         }
     }
-    (void)newenv;
     return (1);
 }
 
-int     fsh_setenv(char **args, char **newenv, char **environ)
+int     fsh_setenv(char **args, char **environ)
 {
     int     i;
     int     len1;
@@ -304,13 +301,12 @@ int     fsh_setenv(char **args, char **newenv, char **environ)
     i = 0;
     while (environ[i])
         i++;
-    args[1] == NULL ? fsh_env(args, newenv, environ) : 1;
+    args[1] == NULL ? fsh_env(args, environ) : 1;
     if (args[1] && args[2] == NULL)
     {
         if (ft_strchr(args[1], '='))
         {
             ft_printf("setenv: Variable name must contain alphanumeric characters.\n");
-            (void)newenv;
             return (1);
         }
         len1 = ft_strlen(args[1]);
@@ -324,10 +320,7 @@ int     fsh_setenv(char **args, char **newenv, char **environ)
     else if (args[1] != NULL && args[2])
     {
         if (ft_compare(args[1], args[2], environ))
-        {
-            (void)newenv;
             return (1);
-        }
         len1 = ft_strlen(args[1]);
         len2 = ft_strlen(args[2]);
         if (!(environ[i] = (char *)malloc(sizeof(char) * (len1 + len2 + 1))))
@@ -338,11 +331,10 @@ int     fsh_setenv(char **args, char **newenv, char **environ)
         environ[i][len1 + len2 + 2] = '\0';
         environ[i + 1] = NULL;
     }
-    (void)newenv;
     return (1);
 }
 
-int     fsh_unsetenv(char **args, char **newenv, char **environ)
+int     fsh_unsetenv(char **args, char **environ)
 {
     if (args[1] == NULL)
     {
@@ -353,6 +345,5 @@ int     fsh_unsetenv(char **args, char **newenv, char **environ)
         return (1);
     if (args[1])
         ft_find_var(args[1], environ);
-    (void)newenv;
     return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/17 15:48:00 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/18 02:26:44 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/18 05:39:07 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int    ft_echo_print_val(char *var, char **env)
     return (1);
 }
 
-int     fsh_echo(char **args, char **newenv, char **environ)
+int     fsh_echo(char **args, char **environ)
 {
     char    *tmp;
     int     i;
@@ -61,6 +61,6 @@ int     fsh_echo(char **args, char **newenv, char **environ)
         args[i + 1] == NULL ? ft_printf("%s\n", args[i]) : ft_printf("%s ", args[i]);
         i++;
     }
-    ft_memdel(args);
+    ft_memdel((void **)args);
     return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/11 16:56:15 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/18 05:12:06 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/18 05:39:37 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int     countaloc;
 int     countpid;
 pid_t   *pids;
 
-void    ft_handler(int s)
+void    ft_handler()
 {
     signal(SIGINT, ft_handler);
     cat == 0 ? write(1, "\r$>   ", 6) : 1;
@@ -32,7 +32,7 @@ void    ft_handler(int s)
 void    ft_error(char *str)
 {
     ft_printf("%s", str);
-    fsh_exit(NULL, NULL, NULL);
+    fsh_exit(NULL, NULL);
 }
 
 char    *fsh_read_line(int fd, char *line)
@@ -74,6 +74,39 @@ char    *fsh_read_line(int fd, char *line)
 //     status = fsh_execute(args, newenv, environ);                           // return status var
 // }
 
+int    ft_semi_colon_loop(char *line, char **args, char **environ)
+{
+    int     i;
+    int     status;
+    char    **semcolargs;
+    
+    status = 1;
+    args = ft_strsplit(line, ';');
+    i = 0;
+    while(args[i] && status)
+    {
+        semcolargs = ft_strsplit(args[i], ' ');
+        status = fsh_execute(semcolargs, environ);
+        i++;
+    }
+    free(semcolargs);
+    return(status);
+}
+
+int     ft_find_semi_colon(char *line)
+{
+    int     i;
+
+    i = 0;
+    while(line[i])
+    {
+        if (line[i] == ';')
+            return (1);
+        i++;
+    }
+    return (0);
+}
+
 void    ft_del_tabs(char *line)
 {
     int     i;
@@ -87,7 +120,7 @@ void    ft_del_tabs(char *line)
     }
 }
 
-void    fsh_loop(char **newenv, char **environ)
+void    fsh_loop(char **environ)
 {
     int     status;
     char    *line;
@@ -96,23 +129,25 @@ void    fsh_loop(char **newenv, char **environ)
     status = 1;
     while(status)
     {
+        cat = 0;
         signal(SIGINT, ft_handler);
         ft_printf("$> ");
         line = fsh_read_line(FD_MIN_SHELL, line);           // read next str
         ft_del_tabs(line);
+        if (ft_find_semi_colon(line))
+            status = ft_semi_colon_loop(line, args, environ);
         args = ft_strsplit(line, ' ');                      // split args
-        status = fsh_execute(args, newenv, environ);        // return status var
+        status = fsh_execute(args, environ);        // return status var
     }
 }
 
 int     main(int argc, char **argv)
 {
     extern char **environ;
-    char        **newenv;
     // Load config files
     // newenv = fsh_config((const char **)environ);
     //Run command loop
-    cat = 0;
+    // cat = 0;
     countaloc = 1;
     countpid = 0;
     // pids = (pid_t *)malloc(sizeof(pid_t) * BUFSIZ);
@@ -121,8 +156,7 @@ int     main(int argc, char **argv)
     addpath = ft_memalloc(BUFSIZ + 1);
     (void)argc;
     (void)argv;
-    fsh_loop(newenv, environ);
-    // exit(0);
+    fsh_loop(environ);
     return (0);
 }
 
