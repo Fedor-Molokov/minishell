@@ -6,7 +6,7 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/13 00:59:49 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/18 04:29:30 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/18 04:37:12 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,12 +178,28 @@ int     fsh_exit(char **args, char **newenv, char **environ)
     return (0);
 }
 
+int     ft_cd_home(char **args, char *tmp, char **environ)
+{
+    ft_bzeroall(prevpath);
+    ft_bzeroall(addpath);
+    getcwd(prevpath, BUFSIZ);
+    tmp = ft_find_home(environ, tmp);
+    if (args[1])
+    {
+        if (args[1][1] != '\0')
+            tmp = ft_strjoin(tmp, &args[1][1]); 
+    }
+    chdir(tmp);
+    free(tmp);
+    return (1);
+}
+
 int     fsh_cd(char **args, char **newenv, char **environ)
 {
     char    *tmp = NULL;
     
-    if (args[1] == NULL) 
-        ft_printf("fsh: expected argument to \"cd\"\n");
+    if (args[1] == NULL)
+        return (ft_cd_home(args, tmp, environ));
     else if (args[1][0] == '-' && args[1][1] == '\0')
     {
         if (prevpath[0] == '\0' && addpath[0] == '\0')
@@ -214,13 +230,7 @@ int     fsh_cd(char **args, char **newenv, char **environ)
         ft_bzeroall(addpath);
         getcwd(prevpath, BUFSIZ);
         if (args[1][0] == '~')
-        {
-            tmp = ft_find_home(environ, tmp);
-            if (args[1][1] != '\0')
-                tmp = ft_strjoin(tmp, &args[1][1]); 
-            chdir(tmp);
-            free(tmp);
-        }
+            return (ft_cd_home(args, tmp, environ));
         else if (chdir(args[1]) != 0)
         {
             ft_printf("%s: No such file or directory.\n", args[1]);
