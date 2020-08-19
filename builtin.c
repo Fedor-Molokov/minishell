@@ -6,7 +6,7 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/13 00:59:49 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/18 06:38:09 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/19 07:17:47 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -269,6 +269,7 @@ int     fsh_env(char **args, char **environ)
             ft_strcpy(varname, args[1]);
             ft_print_env(environ, varname, equally);
         }
+        free(varname);
     }
     return (1);
 }
