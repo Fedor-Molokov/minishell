@@ -6,7 +6,7 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/11 16:56:15 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/19 12:11:18 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/19 16:42:02 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ void	fsh_loop(char **environ)
 	int		status;
 	char	*line;
 	char	**args;
+	char	*tmp = "qwert";
 
 	status = 1;
 	while (status)

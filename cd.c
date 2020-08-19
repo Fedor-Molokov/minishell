@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtin_cd.c                                       :+:      :+:    :+:   */
+/*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/08/19 12:16:46 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/19 13:52:54 by dmarsell         ###   ########.fr       */
+/*   Created: 2020/08/19 15:10:09 by dmarsell          #+#    #+#             */
+/*   Updated: 2020/08/19 15:25:22 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,23 @@
 
 extern char		*g_prevpath;
 extern char		*g_addpath;
+
+char	*ft_find_home(char **env, char *tmp)
+{
+	int		i;
+
+	i = 0;
+	while (env[i])
+	{
+		if (ft_strncmp("HOME", env[i], 4) == 0)
+		{
+			tmp = ft_strdup(&env[i][5]);
+			return (tmp);
+		}
+		i++;
+	}
+	return (NULL);
+}
 
 int		ft_cd_arg(char **args, char **environ, char *tmp)
 {

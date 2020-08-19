@@ -6,7 +6,7 @@
 #    By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/07/24 22:57:41 by dmarsell          #+#    #+#              #
-#    Updated: 2020/08/19 14:25:44 by dmarsell         ###   ########.fr        #
+#    Updated: 2020/08/19 15:52:24 by dmarsell         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,11 +27,12 @@ OBJ = $(addprefix $(OBJ_DIR)/,$(SRC:.c=.o))
 SRC = main.c \
 		builtin.c \
 		echo.c \
-		builtin_cd.c \
-		additional.c \
+		cd.c \
 		env.c \
-		env_next.c \
-		setenv.c 
+		setenv.c \
+		launch.c \
+		unsetenv.c \
+		additional.c 
 
 all: $(NAME)
 
