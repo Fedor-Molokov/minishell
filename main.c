@@ -6,7 +6,7 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/11 16:56:15 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/19 17:24:08 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/19 17:43:30 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,9 @@ int		g_countaloc;
 int		g_countpid;
 pid_t	*g_pids;
 
-void	ft_handler(int g_ctrlc)
+void	ft_handler(int s)
 {
+	(void)s;
 	signal(SIGINT, ft_handler);
 	g_ctrlc == 0 ? write(1, "\r$>   ", 6) : 1;
 	g_ctrlc == 0 ? write(1, "\n$> ", 4) : 1;
