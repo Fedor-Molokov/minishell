@@ -6,7 +6,7 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/11 16:56:15 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/19 07:12:21 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/19 07:37:49 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,19 @@ void    ft_handler()
     cat == 0 ? write(1, "\r$> ", 4) : 1;
     cat == 1 ? write(1, "\r", 1) : 1;
     cat == 1 ? cat = 0 : 1;
+}
+
+void    ft_vectordel(char **vec)
+{
+    int     i;
+
+    i = 0;
+    while(vec[i])
+    {
+        free(vec[i]);
+        i++;
+    }
+    free(vec);
 }
 
 void    ft_error(char *str)
@@ -59,6 +72,7 @@ int    ft_semi_colon_loop(char *line, char **args, char **environ)
         status = fsh_execute(semcolargs, environ);
         i++;
     }
+    ft_vectordel(semcolargs);
     return(status);
 }
 
@@ -111,7 +125,7 @@ void    fsh_loop(char **environ)
             status = fsh_execute(args, environ);       
         }
         free(line);
-        ft_memdel((char **)args); 
+        ft_vectordel(args); 
     }
 }
 
@@ -124,6 +138,9 @@ int     main()
     prevpath = ft_memalloc(BUFSIZ + 1);
     addpath = ft_memalloc(BUFSIZ + 1);
     fsh_loop(environ);
+    ft_memdel(pids);
+    free(prevpath);
+    free(addpath);
     return (0);
 }
 
