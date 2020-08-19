@@ -1,28 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_bzeroall.c                                      :+:      :+:    :+:   */
+/*   ft_vectordel.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/08/14 22:25:09 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/19 10:47:13 by dmarsell         ###   ########.fr       */
+/*   Created: 2020/08/19 10:20:51 by dmarsell          #+#    #+#             */
+/*   Updated: 2020/08/19 10:21:35 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_bzeroall(char *buf)
+void    ft_vectordel(char **vec)
 {
-	size_t		i;
+    int     i;
 
-	if (buf)
-	{
-		i = 0;
-		while (buf[i])
-		{
-			buf[i] = '\0';
-			i++;
-		}
-	}
+    if (vec)
+    {
+        i = 0;
+        while(vec[i])
+        {
+            free(vec[i]);
+            i++;
+        }
+        free(vec);
+    }
 }

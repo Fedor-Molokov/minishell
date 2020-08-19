@@ -6,48 +6,37 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/13 00:59:49 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/19 07:59:56 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/19 11:55:32 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "minishell.h"
-int             fsh_cd(char **args, char **environ);
-int             fsh_help(char **args, char **environ);
-int             fsh_echo(char **args, char **environ);
-int             fsh_setenv(char **args, char **environ);
-int             fsh_unsetenv(char **args, char **environ);
-int             fsh_env(char **args, char **environ);
-int             fsh_exit(char **args, char **environ);
-int             fsh_tab(char **args, char **environ);
-static int  (*builtin_func[]) (char **, char **) = 
-{
-    &fsh_cd, &fsh_help, &fsh_exit, &fsh_env, &fsh_setenv, &fsh_unsetenv, &fsh_echo, &fsh_tab
-};
-static char *builtin_str[] = 
+char *g_builtin_str[] = 
 {
     "cd", "help", "exit", "env", "setenv", "unsetenv", "echo", "\t"
 };
-extern char     *prevpath;
-extern char     *addpath;
-extern int      countpid;
-extern int      countaloc;
-extern int      cat;
-extern pid_t    *pids;
+extern char	    *g_prevpath;
+extern char	    *g_addpath;
+extern int		g_countpid;
+extern int		g_countaloc;
+extern int		g_ctrlc;
+extern pid_t	*g_pids;
+
 
 int     fsh_num_builtins()
 {
-  return (sizeof(builtin_str) / sizeof(char *));
+  return (sizeof(g_builtin_str) / sizeof(char *));
 }
 
-void     ft_realloc(pid_t *pids)
+void     ft_realloc(pid_t *g_pids)
 {
     pid_t   *tmp;
 
-    countaloc++;
-    tmp = ft_memdup(pids);
-    free(pids);
-    pids = ft_memalloc(BUFSIZ * countaloc);
-    pids = ft_memcpy(pids, tmp, (BUFSIZ * countaloc));
+    g_countaloc++;
+    tmp = ft_memdup(g_pids);
+    free(g_pids);
+    g_pids = ft_memalloc(BUFSIZ * g_countaloc);
+    g_pids = ft_memcpy(g_pids, tmp, (BUFSIZ * g_countaloc));
     free(tmp);
 }
 
@@ -114,35 +103,16 @@ int     fsh_launch(char **args, char **environ)
         ft_printf("fsh: fork error\n");
     else
     {
-        cat = 1;
-        pids[countpid] = pid;
-        if (countpid == (BUFSIZ * countaloc))
-            ft_realloc(pids);
-        countpid++;
+        g_ctrlc = 1;
+        g_pids[g_countpid] = pid;
+        if (g_countpid == (BUFSIZ * g_countaloc))
+            ft_realloc(g_pids);
+        g_countpid++;
         wpid = waitpid(pid, &status, WUNTRACED);
         while (!WIFEXITED(status) && !WIFSIGNALED(status))
             wpid = waitpid(pid, &status, WUNTRACED);
     }
     return (1);
-}
-
-int     fsh_execute(char **args, char **environ)
-{
-    int             i;
-    int             count;
-    extern int      cat;
-    
-    if (args[0] && (ft_strcmp(args[0], "cat") == 0) && args[1] == NULL)
-        cat = 1;
-    count = fsh_num_builtins() - 1;
-    if (args[0] == NULL)
-        return (1);
-    i = 0;
-    while(ft_strcmp(args[0], builtin_str[i]) != 0 && i < count)
-        i++;   
-    if (ft_strcmp(args[0], builtin_str[i]) == 0)
-        return ((*builtin_func[i])(args, environ));
-    return (fsh_launch(args, environ));
 }
 
 int     fsh_tab(char **args, char **environ)
@@ -156,19 +126,19 @@ int     fsh_exit(char **args, char **environ)
 {
     (void)args;
     (void)environ;
-    while(countpid > 0)
+    while(g_countpid > 0)
     {
-        kill(pids[countpid], SIGTERM);
-        countpid--;
+        kill(g_pids[g_countpid], SIGTERM);
+        g_countpid--;
     }
     return (0);
 }
 
 int     ft_cd_home(char **args, char *tmp, char **environ)
 {
-    ft_bzeroall(prevpath);
-    ft_bzeroall(addpath);
-    getcwd(prevpath, BUFSIZ);
+    ft_bzeroall(g_prevpath);
+    ft_bzeroall(g_addpath);
+    getcwd(g_prevpath, BUFSIZ);
     tmp = ft_find_home(environ, tmp);
     if (args[1])
     {
@@ -188,33 +158,33 @@ int     fsh_cd(char **args, char **environ)
         return (ft_cd_home(args, tmp, environ));
     else if (args[1][0] == '-' && args[1][1] == '\0')
     {
-        if (prevpath[0] == '\0' && addpath[0] == '\0')
+        if (g_prevpath[0] == '\0' && g_addpath[0] == '\0')
         {
             ft_printf("fsh: No such file or directory\n");
             return (1);
         }
         else
         {
-            if (addpath[0] != '\0')
+            if (g_addpath[0] != '\0')
             {
-                ft_bzeroall(prevpath);
-                getcwd(prevpath, BUFSIZ);
-                chdir(addpath);
-                ft_bzeroall(addpath);
+                ft_bzeroall(g_prevpath);
+                getcwd(g_prevpath, BUFSIZ);
+                chdir(g_addpath);
+                ft_bzeroall(g_addpath);
             }
             else
             {
-                ft_bzeroall(addpath);
-                getcwd(addpath, BUFSIZ);
-                chdir(prevpath);
+                ft_bzeroall(g_addpath);
+                getcwd(g_addpath, BUFSIZ);
+                chdir(g_prevpath);
             }
         }
     }
     else
     {
-        ft_bzeroall(prevpath);
-        ft_bzeroall(addpath);
-        getcwd(prevpath, BUFSIZ);
+        ft_bzeroall(g_prevpath);
+        ft_bzeroall(g_addpath);
+        getcwd(g_prevpath, BUFSIZ);
         if (args[1][0] == '~')
             return (ft_cd_home(args, tmp, environ));
         else if (chdir(args[1]) != 0)
@@ -236,7 +206,7 @@ int     fsh_help(char **args, char **environ)
     i = 0;
     while(i < fsh_num_builtins())
     {
-        printf("  %s\n", builtin_str[i]);
+        printf("  %s\n", g_builtin_str[i]);
         i++;
     }
     printf("Use the man command for information on other programs.\n");
@@ -250,7 +220,8 @@ int     fsh_env(char **args, char **environ)
     int     len;
     int     equally;
     char    *varname;
-        
+    
+    varname = NULL;
     if (args[1] == NULL)
         ft_print_env(environ, NULL, 0);
     else if (args[1] != NULL)
@@ -334,3 +305,26 @@ int     fsh_unsetenv(char **args, char **environ)
         ft_find_var(args[1], environ);
     return (1);
 }
+
+int     fsh_execute(char **args, char **environ)
+{
+    int     i;
+    int     count;
+    int     (*builtin_func[]) (char **, char **) = 
+    {
+        &fsh_cd, &fsh_help, &fsh_exit, &fsh_env, &fsh_setenv, &fsh_unsetenv, &fsh_echo, &fsh_tab
+    };
+    
+    if (args[0] && (ft_strcmp(args[0], "g_ctrlc") == 0) && args[1] == NULL)
+        g_ctrlc = 1;
+    count = fsh_num_builtins() - 1;
+    if (args[0] == NULL)
+        return (1);
+    i = 0;
+    while(ft_strcmp(args[0], g_builtin_str[i]) != 0 && i < count)
+        i++;   
+    if (ft_strcmp(args[0], g_builtin_str[i]) == 0)
+        return ((*builtin_func[i])(args, environ));
+    return (fsh_launch(args, environ));
+}
+

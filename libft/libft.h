@@ -6,7 +6,7 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/21 19:48:12 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/18 02:24:10 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/19 10:22:14 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ int		get_next_line(int const fd, char **line);
 char	*ft_strndup(const char *str, int len);
 int     ft_strnchr(const char *s, int c);
 void	*ft_memdup(const void *mem);
+void    ft_vectordel(char **vec);
 void	ft_bzeroall(char *buf);
 int		ft_tolower(int i);
 int		ft_toupper(int i);

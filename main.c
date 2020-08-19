@@ -6,40 +6,27 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/11 16:56:15 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/19 07:37:49 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/19 11:50:39 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "minishell.h"
 
-char    *prevpath;
-char    *addpath;
-int     cat;
-int     countaloc;
-int     countpid;
-pid_t   *pids;
+char    *g_prevpath;
+char    *g_addpath;
+int     g_ctrlc;
+int     g_countaloc;
+int     g_countpid;
+pid_t   *g_pids;
 
 void    ft_handler()
 {
     signal(SIGINT, ft_handler);
-    cat == 0 ? write(1, "\r$>   ", 6) : 1;
-    cat == 0 ? write(1, "\n$> ", 4) : 1;
-    cat == 0 ? write(1, "\r$> ", 4) : 1;
-    cat == 1 ? write(1, "\r", 1) : 1;
-    cat == 1 ? cat = 0 : 1;
-}
-
-void    ft_vectordel(char **vec)
-{
-    int     i;
-
-    i = 0;
-    while(vec[i])
-    {
-        free(vec[i]);
-        i++;
-    }
-    free(vec);
+    g_ctrlc == 0 ? write(1, "\r$>   ", 6) : 1;
+    g_ctrlc == 0 ? write(1, "\n$> ", 4) : 1;
+    g_ctrlc == 0 ? write(1, "\r$> ", 4) : 1;
+    g_ctrlc == 1 ? write(1, "\r", 1) : 1;
+    g_ctrlc == 1 ? g_ctrlc = 0 : 1;
 }
 
 void    ft_error(char *str)
@@ -112,7 +99,7 @@ void    fsh_loop(char **environ)
     status = 1;
     while(status)
     {
-        cat = 0;
+        g_ctrlc = 0;
         signal(SIGINT, ft_handler);
         ft_printf("$> ");
         line = fsh_read_line(FD_MIN_SHELL, line);          
@@ -132,15 +119,16 @@ void    fsh_loop(char **environ)
 int     main()
 {
     extern char **environ;
-    countaloc = 1;
-    countpid = 0;
-    pids = ft_memalloc(BUFSIZ);
-    prevpath = ft_memalloc(BUFSIZ + 1);
-    addpath = ft_memalloc(BUFSIZ + 1);
+    
+    g_countaloc = 1;
+    g_countpid = 0;
+    g_pids = ft_memalloc(BUFSIZ);
+    g_prevpath = ft_memalloc(BUFSIZ + 1);
+    g_addpath = ft_memalloc(BUFSIZ + 1);
     fsh_loop(environ);
-    ft_memdel(pids);
-    free(prevpath);
-    free(addpath);
+    ft_memdel((void *)g_pids);
+    free(g_prevpath);
+    free(g_addpath);
     return (0);
 }
 
