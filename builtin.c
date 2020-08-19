@@ -6,7 +6,7 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/13 00:59:49 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/19 12:23:49 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/19 13:53:19 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,6 @@ int     fsh_exit(char **args, char **environ)
     }
     return (0);
 }
-
-
 
 int     fsh_help(char **args, char **environ)
 {
