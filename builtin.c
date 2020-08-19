@@ -6,7 +6,7 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/13 00:59:49 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/19 11:55:32 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/19 11:59:07 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,13 +112,6 @@ int     fsh_launch(char **args, char **environ)
         while (!WIFEXITED(status) && !WIFSIGNALED(status))
             wpid = waitpid(pid, &status, WUNTRACED);
     }
-    return (1);
-}
-
-int     fsh_tab(char **args, char **environ)
-{
-    (void)args;
-    (void)environ;
     return (1);
 }
 

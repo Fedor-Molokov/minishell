@@ -6,7 +6,7 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/11 16:57:35 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/18 05:46:45 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/19 11:59:46 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,12 @@ int     fsh_execute(char **args, char **environ);
 void    ft_find_var(char *variable, char **env);
 int     fsh_exit(char **args, char **environ);
 int     fsh_echo(char **args, char **environ);
+int     fsh_tab(char **args, char **environ);
 char    *ft_find_home(char **env, char *tmp);
 char    **fsh_config(const char **environ);
+int     ft_find_semi_colon(char *line);
 char    *ft_del_quotation(char *str);
+void    ft_del_tabs(char *line);
 void    ft_error(char *str);
 
 # endif

@@ -6,157 +6,95 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/11 16:56:15 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/19 11:50:39 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/19 12:11:18 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "minishell.h"
+#include "minishell.h"
 
-char    *g_prevpath;
-char    *g_addpath;
-int     g_ctrlc;
-int     g_countaloc;
-int     g_countpid;
-pid_t   *g_pids;
+char	*g_prevpath;
+char	*g_addpath;
+int		g_ctrlc;
+int		g_countaloc;
+int		g_countpid;
+pid_t	*g_pids;
 
-void    ft_handler()
+void	ft_handler(void)
 {
-    signal(SIGINT, ft_handler);
-    g_ctrlc == 0 ? write(1, "\r$>   ", 6) : 1;
-    g_ctrlc == 0 ? write(1, "\n$> ", 4) : 1;
-    g_ctrlc == 0 ? write(1, "\r$> ", 4) : 1;
-    g_ctrlc == 1 ? write(1, "\r", 1) : 1;
-    g_ctrlc == 1 ? g_ctrlc = 0 : 1;
+	signal(SIGINT, ft_handler);
+	g_ctrlc == 0 ? write(1, "\r$>   ", 6) : 1;
+	g_ctrlc == 0 ? write(1, "\n$> ", 4) : 1;
+	g_ctrlc == 0 ? write(1, "\r$> ", 4) : 1;
+	g_ctrlc == 1 ? write(1, "\r", 1) : 1;
+	g_ctrlc == 1 ? g_ctrlc = 0 : 1;
 }
 
-void    ft_error(char *str)
+char	*fsh_read_line(int fd, char *line)
 {
-    ft_printf("%s", str);
-    fsh_exit(NULL, NULL);
+	if ((get_next_line(fd, &line)) < 0)
+		ft_error("\nfsh: readline error\n");
+	return (line);
 }
 
-char    *fsh_read_line(int fd, char *line)
+int		ft_semi_colon_loop(char *line, char **args, char **environ)
 {
-    if ((get_next_line(fd, &line)) < 0)
-        ft_error("\nfsh: readline error\n");
-    return(line);
+	int		i;
+	int		status;
+	char	**semcolargs;
+
+	status = 1;
+	if (line[0] == ';' && line[1] == '\0')
+		return (1);
+	args = ft_strsplit(line, ';');
+	i = 0;
+	while (args[i] && status)
+	{
+		semcolargs = ft_strsplit(args[i], ' ');
+		status = fsh_execute(semcolargs, environ);
+		i++;
+	}
+	ft_vectordel(semcolargs);
+	return (status);
 }
 
-int    ft_semi_colon_loop(char *line, char **args, char **environ)
+void	fsh_loop(char **environ)
 {
-    int     i;
-    int     status;
-    char    **semcolargs;
-    
-    status = 1;
-    if (line[0] == ';' && line[1] == '\0')
-        return(1);
-    args = ft_strsplit(line, ';');
-    i = 0;
-    while(args[i] && status)
-    {
-        semcolargs = ft_strsplit(args[i], ' ');
-        status = fsh_execute(semcolargs, environ);
-        i++;
-    }
-    ft_vectordel(semcolargs);
-    return(status);
+	int		status;
+	char	*line;
+	char	**args;
+
+	status = 1;
+	while (status)
+	{
+		g_ctrlc = 0;
+		signal(SIGINT, ft_handler);
+		ft_printf("$> ");
+		line = fsh_read_line(FD_MIN_SHELL, line);
+		ft_del_tabs(line);
+		if (ft_find_semi_colon(line))
+			status = ft_semi_colon_loop(line, args, environ);
+		else
+		{
+			args = ft_strsplit(line, ' ');
+			status = fsh_execute(args, environ);
+		}
+		free(line);
+		ft_vectordel(args);
+	}
 }
 
-int     ft_find_semi_colon(char *line)
+int		main(void)
 {
-    int     i;
+	extern char **environ;
 
-    i = 0;
-    while(line[i])
-    {
-        if (line[i] == ';')
-            return (1);
-        i++;
-    }
-    return (0);
+	g_countaloc = 1;
+	g_countpid = 0;
+	g_pids = ft_memalloc(BUFSIZ);
+	g_prevpath = ft_memalloc(BUFSIZ + 1);
+	g_addpath = ft_memalloc(BUFSIZ + 1);
+	fsh_loop(environ);
+	ft_memdel((void *)g_pids);
+	free(g_prevpath);
+	free(g_addpath);
+	return (0);
 }
-
-void    ft_del_tabs(char *line)
-{
-    int     i;
-
-    i = 0;
-    while(line[i])
-    {
-        if (line[i] == '\t')
-            line[i] = ' ';
-        i++;
-    }
-}
-
-void    fsh_loop(char **environ)
-{
-    int     status;
-    char    *line;
-    char    **args;
-
-    status = 1;
-    while(status)
-    {
-        g_ctrlc = 0;
-        signal(SIGINT, ft_handler);
-        ft_printf("$> ");
-        line = fsh_read_line(FD_MIN_SHELL, line);          
-        ft_del_tabs(line);
-        if (ft_find_semi_colon(line))
-            status = ft_semi_colon_loop(line, args, environ);
-        else
-        {
-            args = ft_strsplit(line, ' ');                     
-            status = fsh_execute(args, environ);       
-        }
-        free(line);
-        ft_vectordel(args); 
-    }
-}
-
-int     main()
-{
-    extern char **environ;
-    
-    g_countaloc = 1;
-    g_countpid = 0;
-    g_pids = ft_memalloc(BUFSIZ);
-    g_prevpath = ft_memalloc(BUFSIZ + 1);
-    g_addpath = ft_memalloc(BUFSIZ + 1);
-    fsh_loop(environ);
-    ft_memdel((void *)g_pids);
-    free(g_prevpath);
-    free(g_addpath);
-    return (0);
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-char    *path;
-size_t  size;
-                                        //    path;
-size = BUFSIZ;  
-path = ft_memalloc(size);
-getcwd(path, size);
-ft_printf("%s", path);
-*/
