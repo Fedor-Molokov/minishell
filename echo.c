@@ -6,7 +6,7 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/17 15:48:00 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/18 05:39:07 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/19 08:21:43 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,5 @@ int     fsh_echo(char **args, char **environ)
         args[i + 1] == NULL ? ft_printf("%s\n", args[i]) : ft_printf("%s ", args[i]);
         i++;
     }
-    ft_memdel((void **)args);
     return (1);
 }
