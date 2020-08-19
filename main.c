@@ -6,7 +6,7 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/11 16:56:15 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/19 17:43:30 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/19 18:36:13 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,9 +78,9 @@ void	fsh_loop(char **environ)
 		{
 			args = ft_strsplit(line, ' ');
 			status = fsh_execute(args, environ);
+			ft_vectordel(args);
 		}
 		free(line);
-		ft_vectordel(args);
 	}
 }
 

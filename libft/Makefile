@@ -6,7 +6,7 @@
 #    By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/09/20 20:42:18 by dmarsell          #+#    #+#              #
-#    Updated: 2020/08/19 10:22:33 by dmarsell         ###   ########.fr        #
+#    Updated: 2020/08/19 18:21:15 by dmarsell         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -55,6 +55,7 @@ $(OBJ): $(OBJ_DIR)/%.o: ./%.c $(HD)
 	@echo "\033[32m [OK] \033[0m\033[32mCompiling:\033[36m " $@
 
 $(OBJ_DIR):
+	@echo "\n"
 	@mkdir -p $(OBJ_DIR)
 	@echo "\033[32m [OK] \033[0m\033[32mMaking catalog:\033[36m " $(OBJ_DIR)
 

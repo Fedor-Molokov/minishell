@@ -6,7 +6,7 @@
 #    By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/07/24 22:57:41 by dmarsell          #+#    #+#              #
-#    Updated: 2020/08/19 17:41:32 by dmarsell         ###   ########.fr        #
+#    Updated: 2020/08/19 18:22:15 by dmarsell         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,6 +37,7 @@ SRC = main.c \
 all: $(NAME)
 
 $(NAME): $(OBJ_DIR) $(OBJ)
+	@echo "\n"
 	@$(CC) $(OBJ) $(LIBFT_DIR)/$(LIBFT) -o $(NAME)
 	@echo "\033[32m [OK] \033[0m\033[32mCompiling execution file:\033[36m" $(NAME) 
 	@echo "\033[0m"
@@ -51,14 +52,17 @@ $(OBJ_DIR): $(LIBFT_DIR)
 		@echo "\033[32m [OK] \033[0m\033[32mMaking catalog:\033[36m " $(OBJ_DIR)
 
 clean:
+	@echo "\n"
 	@rm -rf $(OBJ_DIR)
 	@echo "\033[31m [OK] \033[0m\033[31mDeleting catalog and binaries:\033[33m " $(OBJ_DIR)
 		@make clean -C $(LIBFT_DIR)
+		@echo "\033[0m"
 
 fclean: clean
 	@rm -f $(NAME)
 	@echo "\033[31m [OK] \033[0m\033[31mDeleting execution file:\033[33m " $(NAME)
 		@make filecl -C $(LIBFT_DIR)
+		@echo "\033[0m"
 
 re: fclean all
 
