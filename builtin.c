@@ -6,7 +6,7 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/13 00:59:49 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/19 07:17:47 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/19 07:59:56 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ void    fsh_execve(char *path, char **args, char **environ)
 void    fsh_launch_next(char **args, char **environ)
 {
     char    *path;
+    char    *tmp;
     
     path = ft_strdup(args[0]);
     if (access(args[0], 0) != -1)
@@ -70,22 +71,26 @@ void    fsh_launch_next(char **args, char **environ)
         free(path);
         path = ft_memalloc(BUFSIZ);
         getcwd(path, BUFSIZ);
-        path = ft_strjoin(path, "/");
-        path = ft_strjoin(path, args[0]);
+        tmp = ft_strjoin(path, "/");
+        free(path);
+        path = ft_strjoin(tmp, args[0]);
+        free(tmp);
         if ((access(path, 0) != -1))
             fsh_execve(path, args, environ);
         else
         {
             free(path);
-            path = ft_strdup("/bin/");
-            path = ft_strjoin(path, args[0]);
+            tmp = ft_strdup("/bin/");
+            path = ft_strjoin(tmp, args[0]);
+            free(tmp);
             if (access(path, 0) != -1)
                 fsh_execve(path, args, environ);
             else
             {
                 free(path);
-                path = ft_strdup("/usr/bin/");
-                path = ft_strjoin(path, args[0]);
+                tmp = ft_strdup("/usr/bin/");
+                path = ft_strjoin(tmp, args[0]);
+                free(tmp);
                 if (access(path, 0) != -1)
                     fsh_execve(path, args, environ);
                 else if (!(args[0][0] == '\t'))
