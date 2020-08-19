@@ -6,7 +6,7 @@
 #    By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/07/24 22:57:41 by dmarsell          #+#    #+#              #
-#    Updated: 2020/08/19 12:21:06 by dmarsell         ###   ########.fr        #
+#    Updated: 2020/08/19 14:25:44 by dmarsell         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,7 +29,9 @@ SRC = main.c \
 		echo.c \
 		builtin_cd.c \
 		additional.c \
-		env.c
+		env.c \
+		env_next.c \
+		setenv.c 
 
 all: $(NAME)
 
