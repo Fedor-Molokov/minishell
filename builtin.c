@@ -6,113 +6,25 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/13 00:59:49 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/19 11:59:07 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/19 12:23:49 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "minishell.h"
+#include "minishell.h"
 char *g_builtin_str[] = 
 {
     "cd", "help", "exit", "env", "setenv", "unsetenv", "echo", "\t"
 };
-extern char	    *g_prevpath;
-extern char	    *g_addpath;
 extern int		g_countpid;
 extern int		g_countaloc;
 extern int		g_ctrlc;
 extern pid_t	*g_pids;
-
-
-int     fsh_num_builtins()
-{
-  return (sizeof(g_builtin_str) / sizeof(char *));
-}
-
-void     ft_realloc(pid_t *g_pids)
-{
-    pid_t   *tmp;
-
-    g_countaloc++;
-    tmp = ft_memdup(g_pids);
-    free(g_pids);
-    g_pids = ft_memalloc(BUFSIZ * g_countaloc);
-    g_pids = ft_memcpy(g_pids, tmp, (BUFSIZ * g_countaloc));
-    free(tmp);
-}
 
 void    fsh_execve(char *path, char **args, char **environ)
 {
     if (execve(path, args, environ) == -1)
         ft_printf("fsh: execve error\n");
     exit(EXIT_FAILURE);
-}
-
-void    fsh_launch_next(char **args, char **environ)
-{
-    char    *path;
-    char    *tmp;
-    
-    path = ft_strdup(args[0]);
-    if (access(args[0], 0) != -1)
-        fsh_execve(path, args, environ);
-    else
-    {
-        free(path);
-        path = ft_memalloc(BUFSIZ);
-        getcwd(path, BUFSIZ);
-        tmp = ft_strjoin(path, "/");
-        free(path);
-        path = ft_strjoin(tmp, args[0]);
-        free(tmp);
-        if ((access(path, 0) != -1))
-            fsh_execve(path, args, environ);
-        else
-        {
-            free(path);
-            tmp = ft_strdup("/bin/");
-            path = ft_strjoin(tmp, args[0]);
-            free(tmp);
-            if (access(path, 0) != -1)
-                fsh_execve(path, args, environ);
-            else
-            {
-                free(path);
-                tmp = ft_strdup("/usr/bin/");
-                path = ft_strjoin(tmp, args[0]);
-                free(tmp);
-                if (access(path, 0) != -1)
-                    fsh_execve(path, args, environ);
-                else if (!(args[0][0] == '\t'))
-                    ft_printf("%s: Command not found.\n", args[0]);
-            }
-        }
-    }
-    free(path);
-}
-
-int     fsh_launch(char **args, char **environ)
-{
-    pid_t   pid;
-    pid_t   wpid;
-    int     status;
-
-    pid = fork();
-    if (pid == 0) 
-        fsh_launch_next(args, environ);
-    else if (pid < 0)
-        ft_printf("fsh: fork error\n");
-    else
-    {
-        g_ctrlc = 1;
-        g_pids[g_countpid] = pid;
-        if (g_countpid == (BUFSIZ * g_countaloc))
-            ft_realloc(g_pids);
-        g_countpid++;
-        wpid = waitpid(pid, &status, WUNTRACED);
-        while (!WIFEXITED(status) && !WIFSIGNALED(status))
-            wpid = waitpid(pid, &status, WUNTRACED);
-    }
-    return (1);
 }
 
 int     fsh_exit(char **args, char **environ)
@@ -127,68 +39,7 @@ int     fsh_exit(char **args, char **environ)
     return (0);
 }
 
-int     ft_cd_home(char **args, char *tmp, char **environ)
-{
-    ft_bzeroall(g_prevpath);
-    ft_bzeroall(g_addpath);
-    getcwd(g_prevpath, BUFSIZ);
-    tmp = ft_find_home(environ, tmp);
-    if (args[1])
-    {
-        if (args[1][1] != '\0')
-            tmp = ft_strjoin(tmp, &args[1][1]); 
-    }
-    chdir(tmp);
-    free(tmp);
-    return (1);
-}
 
-int     fsh_cd(char **args, char **environ)
-{
-    char    *tmp = NULL;
-    
-    if (args[1] == NULL)
-        return (ft_cd_home(args, tmp, environ));
-    else if (args[1][0] == '-' && args[1][1] == '\0')
-    {
-        if (g_prevpath[0] == '\0' && g_addpath[0] == '\0')
-        {
-            ft_printf("fsh: No such file or directory\n");
-            return (1);
-        }
-        else
-        {
-            if (g_addpath[0] != '\0')
-            {
-                ft_bzeroall(g_prevpath);
-                getcwd(g_prevpath, BUFSIZ);
-                chdir(g_addpath);
-                ft_bzeroall(g_addpath);
-            }
-            else
-            {
-                ft_bzeroall(g_addpath);
-                getcwd(g_addpath, BUFSIZ);
-                chdir(g_prevpath);
-            }
-        }
-    }
-    else
-    {
-        ft_bzeroall(g_prevpath);
-        ft_bzeroall(g_addpath);
-        getcwd(g_prevpath, BUFSIZ);
-        if (args[1][0] == '~')
-            return (ft_cd_home(args, tmp, environ));
-        else if (chdir(args[1]) != 0)
-        {
-            ft_printf("%s: No such file or directory.\n", args[1]);
-            return (1);
-        }
-    }
-    (void)environ;
-    return (1);
-}
 
 int     fsh_help(char **args, char **environ)
 {
@@ -299,6 +150,91 @@ int     fsh_unsetenv(char **args, char **environ)
     return (1);
 }
 
+void     ft_realloc(pid_t *g_pids)
+{
+    pid_t   *tmp;
+
+    g_countaloc++;
+    tmp = ft_memdup(g_pids);
+    free(g_pids);
+    g_pids = ft_memalloc(BUFSIZ * g_countaloc);
+    g_pids = ft_memcpy(g_pids, tmp, (BUFSIZ * g_countaloc));
+    free(tmp);
+}
+
+void    fsh_launch_next(char **args, char **environ)
+{
+    char    *path;
+    char    *tmp;
+    
+    path = ft_strdup(args[0]);
+    if (access(args[0], 0) != -1)
+        fsh_execve(path, args, environ);
+    else
+    {
+        free(path);
+        path = ft_memalloc(BUFSIZ);
+        getcwd(path, BUFSIZ);
+        tmp = ft_strjoin(path, "/");
+        free(path);
+        path = ft_strjoin(tmp, args[0]);
+        free(tmp);
+        if ((access(path, 0) != -1))
+            fsh_execve(path, args, environ);
+        else
+        {
+            free(path);
+            tmp = ft_strdup("/bin/");
+            path = ft_strjoin(tmp, args[0]);
+            free(tmp);
+            if (access(path, 0) != -1)
+                fsh_execve(path, args, environ);
+            else
+            {
+                free(path);
+                tmp = ft_strdup("/usr/bin/");
+                path = ft_strjoin(tmp, args[0]);
+                free(tmp);
+                if (access(path, 0) != -1)
+                    fsh_execve(path, args, environ);
+                else if (!(args[0][0] == '\t'))
+                    ft_printf("%s: Command not found.\n", args[0]);
+            }
+        }
+    }
+    free(path);
+}
+
+int     fsh_launch(char **args, char **environ)
+{
+    pid_t   pid;
+    pid_t   wpid;
+    int     status;
+
+    pid = fork();
+    if (pid == 0) 
+        fsh_launch_next(args, environ);
+    else if (pid < 0)
+        ft_printf("fsh: fork error\n");
+    else
+    {
+        g_ctrlc = 1;
+        g_pids[g_countpid] = pid;
+        if (g_countpid == (BUFSIZ * g_countaloc))
+            ft_realloc(g_pids);
+        g_countpid++;
+        wpid = waitpid(pid, &status, WUNTRACED);
+        while (!WIFEXITED(status) && !WIFSIGNALED(status))
+            wpid = waitpid(pid, &status, WUNTRACED);
+    }
+    return (1);
+}
+
+int     fsh_num_builtins()
+{
+  return (sizeof(g_builtin_str) / sizeof(char *));
+}
+
 int     fsh_execute(char **args, char **environ)
 {
     int     i;
@@ -320,4 +256,3 @@ int     fsh_execute(char **args, char **environ)
         return ((*builtin_func[i])(args, environ));
     return (fsh_launch(args, environ));
 }
-
