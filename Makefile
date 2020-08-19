@@ -6,13 +6,13 @@
 #    By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/07/24 22:57:41 by dmarsell          #+#    #+#              #
-#    Updated: 2020/08/19 15:52:24 by dmarsell         ###   ########.fr        #
+#    Updated: 2020/08/19 17:41:32 by dmarsell         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
-CC = gcc -Wall -Wextra -g
+CC = gcc -Wall -Wextra -Werror -g
 
 HD = minishell.h
 

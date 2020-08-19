@@ -6,7 +6,7 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/21 19:48:12 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/19 10:22:14 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/19 17:35:54 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 # include <sys/stat.h>
 # include <sys/types.h>
 
-#define BUFF_SIZE_GNL 1024
+# define BUFF_SIZE_GNL 1024
 
 int		ft_atoi(const char *str);
 void	ft_bzero(void *buf, size_t n);
@@ -76,9 +76,9 @@ char	*ft_strsub(char const *s, unsigned int start, size_t len);
 char	*ft_strtrim(char const *s);
 int		get_next_line(int const fd, char **line);
 char	*ft_strndup(const char *str, int len);
-int     ft_strnchr(const char *s, int c);
+int		ft_strnchr(const char *s, int c);
 void	*ft_memdup(const void *mem);
-void    ft_vectordel(char **vec);
+void	ft_vectordel(char **vec);
 void	ft_bzeroall(char *buf);
 int		ft_tolower(int i);
 int		ft_toupper(int i);

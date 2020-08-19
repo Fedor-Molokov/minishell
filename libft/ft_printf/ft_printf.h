@@ -6,22 +6,22 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/27 23:08:07 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/07/27 23:08:08 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/19 17:34:53 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FT_PRINTF_H
-#define FT_PRINTF_H
-#define FD 1
+# define FT_PRINTF_H
+# define FD 1
 
 # include <stdlib.h>
 # include <unistd.h>
 # include "../libft.h"
 # include <stdarg.h>
 
-typedef struct			t_flags
+typedef struct			s_flags
 {
-    int				size;
+	int				size;
 	int				varsize;
 	int				div;
 	int				minus;
@@ -29,8 +29,8 @@ typedef struct			t_flags
 	int				space;
 	int				zero;
 	int				hash;
-	int				weidth;					 
-	int				precision;				
+	int				weidth;
+	int				precision;
 	int				dot;
 	int				star;
 	int				print;
@@ -39,9 +39,9 @@ typedef struct			t_flags
 	char			*ox;
 	char			*len;
 	char			type;
-}                   	flags;
+}						flags;
 
-typedef struct			t_use
+typedef struct			s_use
 {
     int				res;
 	int				len;

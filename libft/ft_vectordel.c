@@ -6,24 +6,24 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/19 10:20:51 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/19 10:21:35 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/19 17:32:45 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void    ft_vectordel(char **vec)
+void	ft_vectordel(char **vec)
 {
-    int     i;
+	int		i;
 
-    if (vec)
-    {
-        i = 0;
-        while(vec[i])
-        {
-            free(vec[i]);
-            i++;
-        }
-        free(vec);
-    }
+	if (vec)
+	{
+		i = 0;
+		while (vec[i])
+		{
+			free(vec[i]);
+			i++;
+		}
+		free(vec);
+	}
 }
