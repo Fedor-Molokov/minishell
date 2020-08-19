@@ -6,7 +6,7 @@
 /*   By: dmarsell <dmarsell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/13 00:59:49 by dmarsell          #+#    #+#             */
-/*   Updated: 2020/08/19 17:17:53 by dmarsell         ###   ########.fr       */
+/*   Updated: 2020/08/19 17:20:29 by dmarsell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,16 +60,16 @@ int		fsh_execute(char **args, char **environ)
 {
 	int		i;
 	int		count;
-    int		(*builtin_func[8]) (char **, char **);
+	int		(*builtin_func[8]) (char **, char **);
 
-    builtin_func[0] = &fsh_cd;
-    builtin_func[1] = &fsh_help;
-    builtin_func[2] = &fsh_exit;
-    builtin_func[3] = &fsh_env;
-    builtin_func[4] = &fsh_setenv;
-    builtin_func[5] = &fsh_unsetenv;
-    builtin_func[6] = &fsh_echo;
-    builtin_func[7] = &fsh_tab;
+	builtin_func[0] = &fsh_cd;
+	builtin_func[1] = &fsh_help;
+	builtin_func[2] = &fsh_exit;
+	builtin_func[3] = &fsh_env;
+	builtin_func[4] = &fsh_setenv;
+	builtin_func[5] = &fsh_unsetenv;
+	builtin_func[6] = &fsh_echo;
+	builtin_func[7] = &fsh_tab;
 	if (args[0] && (ft_strcmp(args[0], "g_ctrlc") == 0) && args[1] == NULL)
 		g_ctrlc = 1;
 	count = fsh_num_builtins() - 1;
@@ -82,10 +82,3 @@ int		fsh_execute(char **args, char **environ)
 		return ((*builtin_func[i])(args, environ));
 	return (fsh_launch(args, environ));
 }
-
-
-	// int		(*builtin_func[]) (char **, char **) = 
-	// {
-	// 	&fsh_cd, &fsh_help, &fsh_exit, &fsh_env, &fsh_setenv, &fsh_unsetenv,\
-	// 	&fsh_echo, &fsh_tab
-	// };
